@@ -71,9 +71,6 @@
                 <li ng-show="ship.address < 65536">
                   <a class="" href='' ng-click="path('state/' + ship.name + '/deposit')">Deposit</a>
                 </li>
-                <li ng-show="ship.address < 256">
-                  <a class="" href='' ng-click="path('state/' + ship.name + '/vote')">Vote</a>
-                </li>
               </ul>
               <ul class="list-reset gray-light" ng-switch-when="false">
                 <li>
@@ -87,9 +84,6 @@
                 </li>
                 <li>
                   <u>Deposit</u>
-                </li>
-                <li>
-                  <u>Vote</u>
                 </li>
               </ul>
             </div>
