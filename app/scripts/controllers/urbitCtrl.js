@@ -470,6 +470,7 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
     }
     $scope.valShip = function(ship) {
       if (ship < 0 || ship > 4294967295 || typeof ship !== 'number') {
+
         return true;
       } else {
         return false;
@@ -1070,7 +1071,7 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
     $scope.checkState = function(ship, state, next) {
       $scope.getIsState(ship, state, function(data) {
         if (data[0]) return next();
-        $scope.notifier.danger("Ship is not in state " + state);
+        $scope.notifier.danger("Ship is not in state: " + shipStates[state]);
       });
     }
     $scope.checkEscape = function(ship, parent, next) {
