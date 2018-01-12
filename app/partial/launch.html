@@ -93,7 +93,7 @@
     <button class="btn btn-tetiary" ng-click="path('state')" >&#8592 Back</button>
     <button ng-class="!loading && checked && !shipError && ship && !addressError && address &&  !lockTimeError && locktime? 'btn btn-secondary' : 'btn disabled'" 
       ng-click="checked && !shipError && ship && !addressError && address &&  !lockTimeError && locktime ? doLaunch(ob.toAddress(ship), address, locktime): ''">
-      Create
+      {{ loading ? 'Creating' : 'Create' }}
     </button>
   </section>
   <section class="transaction-data" 

@@ -93,11 +93,11 @@
       <button class="btn btn-tetiary" ng-click="path('state')" >&#8592 Back</button>
       <button ng-switch-when="true" ng-class="!locked && address && checked ? 'btn btn-secondary' : 'btn disabled'" 
         ng-click="address && checked ? doCastConcreteVote(ob.toAddress(shipName), address, voteYes) : ''">
-        Create
+        {{ loading ? 'Creating' : 'Create' }}
       </button>
       <button ng-switch-when="false" ng-class="!locked && hash && checked ? 'btn btn-secondary' : 'btn disabled'" 
         ng-click="hash && checked ? doCastAbstractVote(ob.toAddress(shipName), hash, voteYes) : ''" >
-        Create
+        {{ loading ? 'Creating' : 'Create' }}
       </button>
     </div>
   </section>

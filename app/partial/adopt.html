@@ -88,7 +88,7 @@
     <button class="btn btn-tetiary" ng-click="path('state')" >&#8592 Back</button>
     <button ng-class="!loading && checked && ship ? 'btn btn-secondary' : 'btn disabled'" 
       ng-click="checked && ship ? adopt ? doAdopt(ob.toAddress(parentShipName), ob.toAddress(ship)) : doReject(ob.toAddress(parentShipName), ob.toAddress(ship)) : ''" >
-      Create
+      {{ loading ? 'Creating' : 'Create' }}
     </button>
   </section>
   <section class="transaction-data" ng-show="rawTx" ng-init="sent = false">
