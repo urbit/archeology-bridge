@@ -1,20 +1,20 @@
-<div id="allow-transfer" 
+<div id="configure-keys" 
   class="col-md-12 transaction" 
   ng-init="loadAddresses(); shipName = $routeParams.p != 'offline' ? $routeParams.p : ''">
   <span class="address row text-700">
     {{ wallet.getAddressString() }}
   </span>
   <section class="general-information mb-8 mt-20">
-    <h1 id="action-title row">Allow transfer</h1>
+    <h1 id="action-title row">Configure keys</h1>
     <div class="help-text row mb-4">
-      <p class="col-md-8">This transaction allows the given address to transfer ownership of this ship. This can be used to transfer a ship to a pool, which can then issue a token in return for a star. 
+      <p class="col-md-8">Starting a ship will bring it to life and allow you to set its keys. Please remember that the ship's release time must be in the past. Once you've done this, your ship will be living and your keys will be set.
       </p>
       <p class="col-md-8 red" ng-show="offline">You are in offline mode. Please copy and paste the transaction below into an appropriate client.
       </p>
     </div>
     <div class="label-group">
-      <h4 class="sub-title">Allow transfer of:</h4>
-      <h2 class="ship-name monospace blue" ng-show="shipName != ''">
+      <h4 class="sub-title">Ship to configure:</h4>
+      <h2 class="ship-name blue monospace mt-0" ng-show="shipName != ''">
         {{ shipName[0] == '~' ? shipName : '~' + shipName }}
       </h2>
     </div>
@@ -33,9 +33,27 @@
       <div class="error-label">{{ shipName }} is not a ship</div>
     </div>
     <!-- /show this offline -->
-    <div ng-init="addressError = false" ng-class="addressError ? 'error input-group mb-4' : 'input-group mb-4'">
-      <input type="text" class="col-md-12 monospace" ng-change="addressError = valAddress(poolAddress)" ng-model="poolAddress" value="Address" placeholder="pool-address">
-      <div class="error-label">Not a valid address</div>
+    <div ng-init="encryptionKeyError = false" 
+      ng-class="encryptionKeyError ? 'error input-group mb-4' : 'input-group mb-4'">
+      <input type="text" 
+        class="col-md-12 monospace" 
+        ng-model="encryptionKey" 
+        placeholder="encryption-key">
+      <div class="error-label">Encryption key has to be an alphanumeric string</div>
+    </div>
+    <div ng-init="authenticationKeyError = false" 
+      ng-class="authenticationKeyError ? 'error input-group mb-4' : 'input-group mb-4'">
+      <input type="text" 
+        class="col-md-12 monospace" 
+        ng-model="authenticationKey" 
+        placeholder="authentication-key">
+      <div class="error-label">Authentication key has to be an alphanumeric string</div>
+    </div>
+    <div class="input-group mb-4 row">
+      <div class="checkbox-container">
+        <div ng-class="discontinuous ? 'checkbox checked' : 'checkbox'" ng-click="discontinuous = discontinuous == true ? false : true"></div>
+      </div>
+      <label class="action-confirmation ml-4">Increment ship's continuity number</label>
     </div>
     <!-- show these offline -->
     <div class="offline-params" ng-show="offline">
@@ -69,13 +87,15 @@
     <!-- /show these offline -->
     <div class="input-group mb-4 row">
       <div class="checkbox-container">
-        <div ng-class="checked ? 'checkbox checked' : 'checkbox'" ng-click="checked = checked == true ? false : true"></div>
+        <div ng-class="checked ? 'checkbox checked' : 'checkbox'" 
+          ng-click="checked = checked == true ? false : true">
+        </div>
       </div>
       <label class="action-confirmation ml-4" ng-click="checked = checked == true ? false : true">Yes I am sure</label>
     </div>
-    <button class="btn btn-tetiary" ng-click="path('state')" >&#8592 Back</button>
-    <button ng-class="!loading && checked && !addressError && poolAddress ? 'btn btn-secondary' : 'btn disabled'" 
-      ng-click="checked && !addressError && poolAddress ? doSetTransferProxy(ob.toAddress(shipName), poolAddress) : ''" >
+    <button class="btn btn-tetiary" ng-click="path('state')">&#8592 Back</button>
+    <button ng-class="!loading && checked && encryptionKey && authenticationKey ? 'btn btn-secondary' : 'btn disabled'" 
+      ng-click="checked && encryptionKey && authenticationKey && !encryptionKeyError && !authenticationKeyError ? doConfigureKeys(ob.toAddress(shipName), encryptionKey, authenticationKey, ) : ''">
       {{ loading ? 'Creating' : 'Create' }}
     </button>
   </section>

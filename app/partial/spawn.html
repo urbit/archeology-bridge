@@ -1,25 +1,32 @@
-<div id="allow-transfer" 
+<div id="spawn" 
   class="col-md-12 transaction" 
-  ng-init="loadAddresses(); shipName = $routeParams.p != 'offline' ? $routeParams.p : ''">
+  ng-init="shipName = $routeParams.p != 'offline' ? $routeParams.p : ''">
   <span class="address row text-700">
     {{ wallet.getAddressString() }}
   </span>
   <section class="general-information mb-8 mt-20">
-    <h1 id="action-title row">Allow transfer</h1>
-    <div class="help-text row mb-4">
-      <p class="col-md-8">This transaction allows the given address to transfer ownership of this ship. This can be used to transfer a ship to a pool, which can then issue a token in return for a star. 
+    <h1 id="action-title row">Spawn</h1>
+    <div class="help-text row">
+      <p class="col-md-8">In order to spawn a ship, the ship must be latent and you must be the owner of the ship's parent. Input <code>0</code> to make the ship available immediately.
       </p>
       <p class="col-md-8 red" ng-show="offline">You are in offline mode. Please copy and paste the transaction below into an appropriate client.
       </p>
     </div>
     <div class="label-group">
-      <h4 class="sub-title">Allow transfer of:</h4>
-      <h2 class="ship-name monospace blue" ng-show="shipName != ''">
-        {{ shipName[0] == '~' ? shipName : '~' + shipName }}
-      </h2>
+      <h4 class="sub-title text-700">Ship to spawn:</h4>
+      <h2 class="ship-name blue monospace mt-0" ng-show="ship">{{ formatShipName(ship) }}</h2>
     </div>
   </section>
   <section class="transaction-params mb-8">
+    <div ng-init="shipError = false" 
+      ng-class="shipError ? 'error input-group mb-4' : 'input-group mb-4'">
+      <input sig type="text" 
+        ng-class="isState ? 'confirmed col-md-8 monospace' : 'col-md-8 monospace'" 
+        ng-change="shipError = valShip(ob.toAddress(ship)); isState = false" 
+        ng-model="ship" 
+        value="Star Name" 
+        placeholder="ship">
+    </div>
     <!-- show this offline -->
     <div ng-init="shipError = false" 
       ng-class="shipError ? 'error input-group mb-4' : 'input-group mb-4'" 
@@ -29,12 +36,16 @@
         ng-change="shipError = valShip(ob.toAddress(shipName))" 
         ng-model="shipName" 
         value="Star Name" 
-        placeholder="ship">
+        placeholder="parent-ship">
       <div class="error-label">{{ shipName }} is not a ship</div>
     </div>
     <!-- /show this offline -->
+    <div class="input-group mb-4">
+      <button class="btn btn-primary" ng-click="ship = toShipName(getChildCandidate(ob.toAddress(shipName)))">Suggest valid ship</button>
+      <button ng-show="!offline" ng-class="isState || !ship ? 'btn disabled' : 'btn btn-secondary'" ng-click="readIsState(ob.toAddress(ship), 0)">Confirm availability</button>
+    </div>
     <div ng-init="addressError = false" ng-class="addressError ? 'error input-group mb-4' : 'input-group mb-4'">
-      <input type="text" class="col-md-12 monospace" ng-change="addressError = valAddress(poolAddress)" ng-model="poolAddress" value="Address" placeholder="pool-address">
+      <input type="text" class="col-md-12 monospace" ng-change="addressError = valAddress(address)" ng-model="address" value="Address" placeholder="new-address">
       <div class="error-label">Not a valid address</div>
     </div>
     <!-- show these offline -->
@@ -69,13 +80,15 @@
     <!-- /show these offline -->
     <div class="input-group mb-4 row">
       <div class="checkbox-container">
-        <div ng-class="checked ? 'checkbox checked' : 'checkbox'" ng-click="checked = checked == true ? false : true"></div>
+        <div ng-class="checked ? 'checkbox checked' : 'checkbox'" 
+          ng-click="checked = checked == true ? false : true">
+        </div>
       </div>
       <label class="action-confirmation ml-4" ng-click="checked = checked == true ? false : true">Yes I am sure</label>
     </div>
     <button class="btn btn-tetiary" ng-click="path('state')" >&#8592 Back</button>
-    <button ng-class="!loading && checked && !addressError && poolAddress ? 'btn btn-secondary' : 'btn disabled'" 
-      ng-click="checked && !addressError && poolAddress ? doSetTransferProxy(ob.toAddress(shipName), poolAddress) : ''" >
+    <button ng-class="!loading && checked && !shipError && ship && !addressError && address ? 'btn btn-secondary' : 'btn disabled'" 
+      ng-click="checked && !shipError && ship && !addressError && address ? doSpawn(ob.toAddress(ship), address): ''">
       {{ loading ? 'Creating' : 'Create' }}
     </button>
   </section>

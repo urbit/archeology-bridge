@@ -37,30 +37,22 @@
               <div class="col-title text-600 h-font">
                 State:
               </div>
-              <ul class="list-reset state-label text-700" ng-switch="ship.state == 1">
-                <li ng-switch-when="false" class="green">
-                  Living
+              <ul class="list-reset state-label text-700" ng-switch="ship.active">
+                <li ng-switch-when="true" class="green">
+                  Active
                 </li>
-                <div ng-switch-when="true" class="" ng-switch="isPast(ship.locktime)">
-                  <li ng-switch-when="true" class="">
-                    Unlocked
-                  </li>
-                  <li ng-switch-when="false" class="red">
-                    Locked
-                  </li>
-                  <li ng-switch-when="false" class="red">
-                    -{{ secToString(remainingSecs(ship.locktime)) }}
-                  </li>
-                </div>
+                <li ng-switch-when="false" class="">
+                  Latent
+                 </li>
               </ul>
             </div>
-            <div class="live-action-col col-md-3" ng-switch="ship.state == 1">
+            <div class="live-action-col col-md-3" ng-switch="ship.active">
               <div class="col-title text-600 h-font">
                 Actions
               </div>
-              <ul class="list-reset" ng-switch-when="true">
+              <ul class="list-reset" ng-switch-when="false">
                 <li>
-                  <a class="" href='' ng-click="path('state/' + ship.name + '/start')">Start</a>
+                  <a class="" href='' ng-click="path('state/' + ship.name + '/configurekeys')">Configure keys</a>
                 </li>
                 <li>
                   <a class="" href='' ng-click="path('state/' + ship.name + '/transfer')">Transfer</a>
@@ -72,9 +64,9 @@
                   <a class="" href='' ng-click="path('state/' + ship.name + '/deposit')">Deposit</a>
                 </li>
               </ul>
-              <ul class="list-reset gray-light" ng-switch-when="false">
+              <ul class="list-reset gray-light" ng-switch-when="true">
                 <li>
-                  <u>Start</u>
+                  <u>Configure keys</u>
                 </li>
                 <li>
                   <u>Transfer</u>
@@ -87,13 +79,13 @@
                 </li>
               </ul>
             </div>
-            <div class="live-action-col col-md-3" ng-switch="ship.state == 2">
+            <div class="live-action-col col-md-3" ng-switch="ship.active">
               <div class="col-title buffer">
                 00
               </div>
               <ul class="list-reset" ng-switch-when="true">
                 <li ng-show="ship.address < 65536">
-                  <a class="" href='' ng-click="path('state/' + ship.name + '/launch')">Launch child</a>
+                  <a class="" href='' ng-click="path('state/' + ship.name + '/spawn')">Spawn</a>
                 </li>
                 <li>
                   <a class="" href='' ng-click="path('state/' + ship.name + '/transfer')">Transfer</a>
@@ -102,10 +94,10 @@
                   <a class="" href='' ng-click="path('state/' + ship.name + '/allowtransfer')">Allow transfer</a>
                 </li>
                 <li>
-                  <a class="" href='' ng-click="path('state/' + ship.name + '/launchrights')">Grand/revoke rights</a>
+                  <a class="" href='' ng-click="path('state/' + ship.name + '/setspawnproxy')">Set spawn proxy</a>
                 </li>
                 <li>
-                  <a class="" href='' ng-click="path('state/' + ship.name + '/rekey')">Rekey</a>
+                  <a class="" href='' ng-click="path('state/' + ship.name + '/configurekeys')">Configure keys</a>
                 </li>
                 <li ng-show="ship.address > 255">
                   <a class="" href='' ng-click="path('state/' + ship.name + '/escape')">Escape</a>
@@ -119,7 +111,7 @@
               </ul>
               <ul class="list-reset gray-light" ng-switch-when="false">
                 <li>
-                  <u>Launch child</u>
+                  <u>Spawn child</u>
                 </li>
                 <li>
                   <u>Transfer</u>
@@ -128,10 +120,10 @@
                   <u>Allow transfer</u>
                 </li>
                 <li>
-                  <u>Grant/revoke rights</u>
+                  <u>Set spawn proxy</u>
                 </li>
                 <li>
-                  <u>Rekey</u>
+                  <u>Configure keys</u>
                 </li>
                 <li ng-show="ship.address > 255">
                   <u>Escape</u>
@@ -155,7 +147,7 @@
             <a href="" ng-click="path('state/creategalaxy')">Create Galaxy</a>
           </li>
           <li> 
-            <a class="" href="" ng-click="path('state/offline/start')">Start</a>
+            <a class="" href="" ng-click="path('state/offline/configurekeys')">Configure keys</a>
           </li>
           <li>
             <a class="" href="" ng-click="path('state/offline/transfer')">Transfer</a>
@@ -167,10 +159,7 @@
             <a class="" href="" ng-click="path('state/offline/launch')">Launch child</a>
           </li>
           <li> 
-            <a class="" href="" ng-click="path('state/offline/launchrights')">Grant rights</a>
-          </li>
-          <li> 
-            <a class="" href="" ng-click="path('state/offline/rekey')">Rekey</a>
+            <a class="" href="" ng-click="path('state/offline/setspawnproxy')">Set spawn proxy</a>
           </li>
           <li> 
             <a class="" href="" ng-click="path('state/offline/escape')">Escape</a>

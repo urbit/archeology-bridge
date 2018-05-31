@@ -92,7 +92,7 @@
     </div>
     <button class="btn btn-tetiary" ng-click="path('state')" >&#8592 Back</button>
     <button ng-class="!loading && checked && !shipError && ship && !addressError && address &&  !lockTimeError && locktime? 'btn btn-secondary' : 'btn disabled'" 
-      ng-click="checked && !shipError && ship && !addressError && address &&  !lockTimeError && locktime ? doLaunch(ob.toAddress(ship), address, locktime): ''">
+      ng-click="checked && !shipError && ship && !addressError && address &&  !lockTimeError && locktime ? doSpawn(ob.toAddress(ship), address, locktime): ''">
       {{ loading ? 'Creating' : 'Create' }}
     </button>
   </section>

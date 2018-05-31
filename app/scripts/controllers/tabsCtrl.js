@@ -33,17 +33,16 @@ var tabsCtrl = function($scope, globalService, $translate, $sce, $location, $roo
 
     $scope.navDisplayDict = {
       'creategalaxy': 'Create galaxy',
-      'launchrights': 'Launch rights',
       'allowtransfer': 'Allow transfer',
       'withdraw': 'Withdraw star',
       'deposit': 'Deposit',
-      'launch': 'Launch',
       'transfer': 'Transfer',
-      'rekey': 'Rekey',
       'escape': 'Escape',
       'adopt': 'Adopt',
       'vote': 'Vote',
-      'start': 'Start'
+      'spawn': 'Spawn',
+      'setspawnproxy': 'Set spawn proxy',
+      'configurekeys': 'Configure keys'
     };
 
     // This is dependent on URL handling

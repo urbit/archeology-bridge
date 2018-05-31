@@ -607,8 +607,7 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
         $scope.tmp[address] = {};
         $scope.tmp[address]['name'] = '~' + $scope.toShipName(address);
         $scope.tmp[address]['address'] = address;
-        $scope.tmp[address]['state'] = data[1];
-        $scope.tmp[address]['locktime'] = data[2];
+        $scope.tmp[address]['active']  = data[0];
         if (terminate) {
           $scope.tempOwnedShips = $scope.tmp;
           if (!angular.equals($scope.ownedShips, $scope.tempOwnedShips)) {
@@ -617,7 +616,7 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
           }
         }
       }
-      $scope.getShipData(address, put)
+      $scope.getIsActive(address, put);
     }
 
     $scope.setPoolAddress = function(x) {
@@ -702,13 +701,13 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
       $scope.readContractData($scope.contracts.ships,
         "getShipData(uint32)",
         [ship],
-        [ "address",  // pilot
-          "uint8",    // state
-          "uint64",   // locked
-          "bytes32",  // key
-          "uint256",  // revision
-          "uint16",   // parent
-          "uint32"    // escape
+        [ "address",  // owner
+          "bool",     // active
+          "bytes32",  // encryptionKey
+          "bytes32",  // authenticationKey
+          "uint256",  // keyRevisionNumber
+          "uint32",   // sponsor
+          "uint32"    // escapeRequestedTo
         ],
         callback
       );
@@ -721,26 +720,26 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
         callback
       );
     }
-    $scope.getHasPilot = function(ship, callback) {
+    $scope.getOwner = function(ship, callback) {
       $scope.readContractData($scope.contracts.ships,
-        "hasPilot(uint32)",
-        [ship],
-        ["bool"],
+        "getOwner(uint32)",
+        [ship, address],
+        ["address"],
         callback
       );
     }
-    $scope.getIsPilot = function(ship, address, callback) {
+    $scope.getIsOwner = function(ship, address, callback) {
       $scope.readContractData($scope.contracts.ships,
-        "isPilot(uint32,address)",
+        "isOwner(uint32,address)",
         [ship, address],
         ["bool"],
         callback
       );
     }
-    $scope.getIsState = function(ship, state, callback) {
+    $scope.getIsActive = function(ship, callback) {
       $scope.readContractData($scope.contracts.ships,
-        "isState(uint32,uint8)",
-        [ship, state],
+        "isActive(uint32)",
+        [ship],
         ["bool"],
         callback
       );
@@ -761,18 +760,18 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
         callback
       );
     }
-    $scope.getParent = function(ship, callback) {
+    $scope.getSponsor = function(ship, callback) {
       $scope.readContractData($scope.contracts.ships,
-        "getParent(uint32)",
+        "getSponsor(uint32)",
         [ship],
-        ["uint16"],
+        ["uint32"],
         callback
       );
     }
-    $scope.getIsEscape = function(ship, escape, callback) {
+    $scope.getIsEscape = function(ship, escapeRequestedTo, callback) {
       $scope.readContractData($scope.contracts.ships,
         "isEscape(uint32,uint16)",
-        [ship, escape],
+        [ship, escapeRequestedTo],
         ["bool"],
         callback
       );
@@ -785,17 +784,17 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
         callback
       );
     }
-    $scope.getIsTransferrer = function(ship, address, callback) {
+    $scope.getIsTransferProxy = function(ship, address, callback) {
       $scope.readContractData($scope.contracts.ships,
-        "isTransferrer(uint32,address)",
+        "isTransferProxy(uint32,address)",
         [ship, address],
         ["bool"],
         callback
       );
     }
-    $scope.getIsLauncher = function(ship, address, callback) {
+    $scope.getIsSpawnProxy = function(ship, address, callback) {
       $scope.readContractData($scope.contracts.ships,
-        "isLauncher(uint16,address)",
+        "isSpawnProxy(uint16,address)",
         [ship, address],
         ["bool"],
         callback
@@ -897,11 +896,10 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
     //
     $scope.readShipData = function(ship) {
       $scope.validateShip(ship, function() {
-        $scope.getShipData(ship, put);
+        $scope.getIsActive(ship, put);
       });
       function put(data) {
-        $scope.ownedShips[ship]['state'] = data[1];
-        $scope.ownedShips[ship]['locktime'] = data[2];
+        $scope.ownedShips[ship]['active'] = data[0];
       }
     }
     $scope.readOwnedShips = function(addr) {
@@ -916,23 +914,23 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
         $scope.ownedShips = $scope.generateShipList(res);
       });
     }
-    $scope.readHasPilot = function(ship) {
+    $scope.readHasOwner = function(ship) {
       $scope.validateShip(ship, function() {
-        $scope.getHasPilot(ship, put);
+        $scope.getOwner(ship, put);
       });
       function put(data) {
-        $scope.hasPilot = data[0];
+        $scope.hasOwner = data[0].length > 0 ? true : false;
       }
     }
-    $scope.readIsPilot = function(ship, addr) {
+    $scope.readIsOwner = function(ship, addr) {
       $scope.validateShip(ship, function() {
         $scope.validateAddress(addr, function() {
-          $scope.getIsPilot(ship, addr, put);
+          $scope.getIsOwner(ship, addr, put);
         });
       });
       function put(data) {
         // not 100% that this is bool
-        $scope.isPilot = data[0];
+        $scope.isOwner = data[0];
       }
     }
     $scope.readIsState = function(ship, stat) {
@@ -971,17 +969,16 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
     }
     $scope.readParent = function(ship) {
       $scope.validateChild(ship, function() {
-        $scope.getParent(ship, put);
+        $scope.getSponsor(ship, put);
       });
       function put(data) {
-        // changed 'parent' to 'parentShip'
         $scope.parentShip = data[0];
       }
     }
-    $scope.readIsEscape = function(ship, escape) {
+    $scope.readIsEscape = function(ship, escapeRequestedTo) {
       $scope.validateChild(ship, function() {
-        $scope.validateParent(escp, function () {
-          $scope.getIsEscape(ship, escp, put);
+        $scope.validateParent(escapeRequestedTo, function () {
+          $scope.getIsEscape(ship, escapeRequestedTo, put);
         });
       });
       function put(data) {
@@ -996,14 +993,14 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
         $scope.key = data[0];
       }
     }
-    $scope.readIsLauncher = function(ship, addr) {
+    $scope.readIsSpawnProxy = function(ship, addr) {
       $scope.validateParent(ship, function() {
         $scope.validateAddress(addr, function () {
-          $scope.getIsLauncher(ship, addr, put);
+          $scope.getIsSpawnProxy(ship, addr, put);
         });
       });
       function put(data) {
-        $scope.isLauncher = data[0];
+        $scope.isSpawnProxy = data[0];
       }
     }
     $scope.readBalance = function() {
@@ -1057,25 +1054,31 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
     // CHECK: verify if conditions for a transaction are met
     //
     $scope.checkOwnership = function(ship, next) {
-      $scope.getIsPilot(ship, $scope.wallet.getAddressString(), function(data) {
+      $scope.getIsOwner(ship, $scope.wallet.getAddressString(), function(data) {
         if (data[0]) return next();
         $scope.notifier.danger("Not your ship. " + ship);
       });
     }
-    $scope.checkIsTransferrer = function(ship, addr, next) {
-      $scope.getIsTransferrer(ship, addr, function(data) {
+    $scope.checkIsTransferProxy = function(ship, addr, next) {
+      $scope.getIsTransferProxy(ship, addr, function(data) {
         if (data[0]) return next();
         $scope.notifier.danger("Ship is not transferable by " + addr);
       });
     }
-    $scope.checkState = function(ship, state, next) {
-      $scope.getIsState(ship, state, function(data) {
+    $scope.checkIsUnlocked = function(ship, next) {
+      $scope.getIsActive(ship, function(data) {
         if (data[0]) return next();
-        $scope.notifier.danger("Ship is not in state: " + shipStates[state]);
+        $scope.notifier.danger("Ship is not active");
       });
     }
-    $scope.checkEscape = function(ship, parent, next) {
-      $scope.getIsEscape(ship, parent, function(data) {
+    $scope.checkIsLatent = function(ship, next) {
+      $scope.getIsActive(ship, function(data) {
+        if (!data[0]) return next();
+        $scope.notifier.danger("Ship is active");
+      });
+    }
+    $scope.checkEscape = function(ship, sponsor, next) {
+      $scope.getIsEscape(ship, sponsor, function(data) {
         if (data[0]) return next();
         $scope.notifier.danger("Escape doesn't match.");
       });
@@ -1090,10 +1093,10 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
     }
     $scope.checkSale = function(ship, address, next) {
       //TODO move to utility function maybe
-      var parent = ship % 65536;
-      if (ship < 65536) parent = ship % 256;
-      $scope.getIsLauncher(parent, address, checkLauncher);
-      function checkLauncher(data) {
+      var sponsor = ship % 65536;
+      if (ship < 65536) sponsor = ship % 256;
+      $scope.getIsSpawnProxy(sponsor, address, checkSpawnProxy);
+      function checkSpawnProxy(data) {
         if (data[0]) return $scope.getSalePrice(address, checkPrice);
         return $scope.notifier.danger("Contract can't launch ships.");
       }
@@ -1121,32 +1124,28 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
         );
       }
     }
-    $scope.doCreateGalaxy = function(galaxy, address, locktime, completetime) {
+    $scope.doCreateGalaxy = function(galaxy, address) {
       $scope.loading = true;
       $scope.validateGalaxy(galaxy, function() {
         $scope.validateAddress(address, function() {
-          $scope.validateTimestamp(locktime, function() {
-            $scope.validateTimestamp(locktime, function() {
-              if ($scope.offline) return transact();
-              $scope.getConstitutionOwner(checkPermission);
-            });
-          });
+          if ($scope.offline) return transact();
+          $scope.getConstitutionOwner(checkPermission);
         });
       });
       function checkPermission(data) {
         if (data[0] != $scope.wallet.getAddressString())
           return $scope.notifier.danger("Insufficient permissions.");
-        $scope.getHasPilot(galaxy, checkAvailable);
+        $scope.getOwner(galaxy, checkAvailable);
       }
       function checkAvailable(data) {
-        if (data[0])
+        if (data[0].length > 0)
           return $scope.notifier.danger("Galaxy already owned.");
         transact();
       }
       function transact() {
         $scope.doTransaction($scope.contracts.constitution,
-          "createGalaxy(uint8,address,uint64,uint64)",
-          [galaxy, address, locktime, completetime]
+          "createGalaxy(uint8,address)",
+          [galaxy, address]
         );
       }
     }
@@ -1159,8 +1158,7 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
       function checkBalance(data) {
         if (data[0] < $scope.oneSpark)
           return $scope.notifier.danger("Insufficient Sparks.");
-        //TODO state enum (liquid)
-        $scope.checkState(star, 1, function() {
+        $scope.checkIsLatent(star, function() {
           $scope.getAllowance(transact);
         });
       }
@@ -1178,10 +1176,9 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
       $scope.loading = true;
       $scope.validateStar(star, function() {
         if ($scope.offline) return transact();
-          //TODO state enum (latent)
-          $scope.checkIsTransferrer(star, $rootScope.poolAddress, function() {
+          $scope.checkIsTransferProxy(star, $rootScope.poolAddress, function() {
             $scope.checkOwnership(star, function() {
-              $scope.checkState(star, 1, transact);
+              $scope.checkIsLatent(star, transact);
             });
           });
       });
@@ -1205,51 +1202,44 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
         );
       }
     }
-    $scope.doLaunch = function(ship, addr, locktime) {
+    $scope.doSpawn = function(ship, addr) {
       $scope.loading = true;
-      var parent = ship % 256;
-      if (ship > 65535) parent = ship % 65536;
+      var sponsor = ship % 256;
+      if (ship > 65535) sponsor = ship % 65536;
       $scope.validateShip(ship, function() {
         $scope.validateAddress(addr, function() {
-          $scope.validateTimestamp(locktime, function() {
-            if ($scope.offline) return transact();
-            // ship needs to be latent
-            //TODO state enum (latent)
-            $scope.checkState(ship, 0, checkParent);
-          });
+          if ($scope.offline) return transact();
+          $scope.checkIsLatent(ship, checkParent);
         });
       });
       // ship needs to be galaxy, or its parent needs to be living
       function checkParent() {
         if (ship < 256) return checkRights();
-        //TODO state enum (living)
-        $scope.checkState(parent, 2, checkRights);
+        $scope.checkIsUnlocked(sponsor, checkRights);
       }
-      // user needs to be pilot of parent or launcher of parent
+      // user needs to be owner of sponsor or spawn proxy of sponsor
       function checkRights() {
-        $scope.getIsLauncher(parent, $scope.wallet.getAddressString(),
+        $scope.getIsSpawnProxy(sponsor, $scope.wallet.getAddressString(),
         function(data) {
           if (data[0]) return transact();
-          $scope.checkOwnership(parent, transact);
+          $scope.checkOwnership(sponsor, transact);
         });
       }
       function transact() {
         $scope.doTransaction($scope.contracts.constitution,
-          "launch(uint32,address,uint64)",
-          [ship, addr, locktime]
+          "launch(uint32,address)",
+          [ship, addr]
         );
       }
     }
     $scope.doLiquidateStar = function(star) {
       $scope.loading = true;
-      var parent = star % 256;
+      var sponsor = star % 256;
       $scope.validateStar(star, function() {
         if ($scope.offline) return transact();
-        $scope.checkOwnership(parent, function() {
-          //TODO state enum (living)
-          $scope.checkState(parent, 3, function() {
-            //TODO state enum (latent)
-            $scope.checkState(star, 0, transact);
+        $scope.checkOwnership(sponsor, function() {
+          $scope.checkIsUnlocked(sponsor, function() {
+            $scope.checkIsLatent(star, transact);
           });
         });
       });
@@ -1260,60 +1250,39 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
         );
       }
     }
-    $scope.doGrantLaunchRights = function(star, addr) {
+    $scope.doSetSpawnProxy = function(ship, addr) {
       $scope.loading = true;
-      $scope.validateParent(star, function() {
+      $scope.validateParent(ship, function() {
         $scope.validateAddress(addr, function() {
           if ($scope.offline) return transact();
-          $scope.checkOwnership(star, function() {
-            //TODO state enum (living)
-            $scope.checkState(star, 2, transact);
+          $scope.checkOwnership(ship, function() {
+            $scope.checkIsUnlocked(ship, transact);
           });
         });
       });
       function transact() {
         $scope.doTransaction($scope.contracts.constitution,
-          "grantLaunchRights(uint16,address)",
-          [star, addr]
+          "setSpawnProxy(uint16,address)",
+          [ship, addr]
         );
       }
     }
-    $scope.doRevokeLaunchRights = function(star, addr) {
-      $scope.loading = true;
-      $scope.validateParent(star, function() {
-        $scope.validateAddress(addr, function() {
-          if ($scope.offline) return transact();
-          $scope.checkOwnership(star, transact);
-        });
-      });
-      function transact() {
-        $scope.doTransaction($scope.contracts.constitution,
-          "revokeLaunchRights(uint16,address)",
-          [star, addr]
-        );
-      }
-    }
-    $scope.doStart = function(ship, key) {
+    $scope.doConfigureKeys = function(ship, encryptionKey, authenticationKey, discontinuous) {
       $scope.loading = true;
       $scope.validateShip(ship, function() {
-        $scope.validateBytes32(key, function() {
-          if ($scope.offline) return transact();
-          $scope.checkOwnership(ship, function() {
-            // have to update all these states to reflect changes in contract
-            $scope.checkState(ship, 1, function() {
-              $scope.getLocked(ship, checkLocktime);
+        $scope.validateBytes32(encryptionKey, function() {
+          $scope.validateBytes32(authenticationKey, function() {
+            if ($scope.offline) return transact();
+            $scope.checkOwnership(ship, function() {
+              $scope.checkIsUnlocked(ship, transact);
             });
           });
         });
       });
-      function checkLocktime(data) {
-        if (data[0] <= (Date.now() / 1000)) return transact();
-        $scope.notifier.danger("Ship locked until " + data[0])
-      }
       function transact() {
         $scope.doTransaction($scope.contracts.constitution,
-          "start(uint32,bytes32)",
-          [ship, key]
+          "configureKeys(uint32,bytes32,bytes32,bool)",
+          [ship, encryptionKey, authenticationKey, discontinuous]
         );
       }
     }
@@ -1332,7 +1301,7 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
         );
       }
     }
-    $scope.doAllowTransferBy = function(ship, addr) {
+    $scope.doSetTransferProxy = function(ship, addr) {
       $scope.loading = true;
       $scope.validateShip(ship, function() {
         $scope.validateAddress(addr, function() {
@@ -1342,30 +1311,15 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
       });
       function transact() {
         $scope.doTransaction($scope.contracts.constitution,
-          "allowTransferBy(uint32,address)",
+          "setTransferProxy(uint32,address)",
           [ship, addr]
         );
       }
     }
-    $scope.doRekey = function(ship, key) {
-      $scope.loading = true;
-      $scope.validateShip(ship, function() {
-        $scope.validateBytes32(key, function() {
-          if ($scope.offline) return transact();
-          $scope.checkOwnership(ship, transact);
-        });
-      });
-      function transact() {
-        $scope.doTransaction($scope.contracts.constitution,
-          "rekey(uint32,bytes32)",
-          [ship, key]
-        );
-      }
-    }
-    $scope.doEscape = function(ship, parent) {
+    $scope.doEscape = function(ship, sponsor) {
       $scope.loading = true;
       $scope.validateChild(ship, function() {
-        $scope.validateParent(parent, function() {
+        $scope.validateParent(sponsor, function() {
           if ($scope.offline) return transact();
           $scope.checkOwnership(ship, transact);
         });
@@ -1373,7 +1327,7 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
       function transact() {
         $scope.doTransaction($scope.contracts.constitution,
           "escape(uint32,uint16)",
-          [ship, parent]
+          [ship, sponsor]
         );
       }
     }
@@ -1417,8 +1371,7 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
         $scope.validateAddress(addr, function() {
           if ($scope.offline) return transact();
           $scope.checkOwnership(galaxy, function() {
-            //TODO state enum (living)
-            $scope.checkState(galaxy, 2, function() {
+            $scope.checkIsUnlocked(galaxy, function() {
               $scope.getConcreteVote(galaxy, addr, checkVote);
             });
           });
@@ -1441,8 +1394,7 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
         $scope.validateBytes32(prop, function() {
           if ($scope.offline) return transact();
           $scope.checkOwnership(galaxy, function() {
-            //TODO state enum (living)
-            $scope.checkState(galaxy, 2, function() {
+            $scope.checkIsUnlocked(galaxy, function() {
               $scope.getIsAbstractMajority(prop, checkMajority);
             });
           });

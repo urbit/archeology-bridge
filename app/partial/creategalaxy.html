@@ -38,26 +38,6 @@
         placeholder="new-address">
       <div class="error-label">Not a valid address</div>
     </div>
-    <div ng-init="lockTimeError = false" 
-      ng-class="lockTimeError ? 'error input-group mb-4' : 'input-group mb-4'">
-      <input type="text" 
-        class="col-md-4" 
-        ng-change="lockTimeError = valTimestamp(locktime)" 
-        ng-model="locktime" 
-        value="Lock Time" 
-        placeholder="lock-time">
-      <div class="error-label">Lock time must be positive</div>
-    </div>
-    <div ng-init="completeTimeError = false" 
-      ng-class="completeTimeError ? 'error input-group mb-4' : 'input-group mb-4'">
-      <input type="text" 
-        class="col-md-4" 
-        ng-change="completeTimeError = valTimestamp(completetime)" 
-        ng-model="completetime" 
-        value="Complete Time" 
-        placeholder="complete-time">
-      <div class="error-label">Complete time must be positive</div>
-    </div>
     <!-- show these offline -->
     <div class="offline-params" ng-show="offline">
       <div ng-init="gasLimitError = false" 
@@ -90,14 +70,14 @@
     <!-- /show these offline -->
     <button class="btn btn-tetiary" 
       ng-click="path('state')">&#8592 Back</button>
-    <button ng-class="!loading && !galaxyError && galaxy && !addressError && address && !lockTimeError && locktime && !completeTimeError && completetime && !loading? 'btn btn-secondary': 'btn disabled'" 
-      ng-click="!galaxyError && galaxy && !addressError && address && !lockTimeError && locktime && !completeTimeError && completetime ? doCreateGalaxy(ob.toAddress(galaxy), address, locktime, completetime): ''">
+    <button ng-class="!loading && !galaxyError && galaxy && !addressError && address && !loading? 'btn btn-secondary': 'btn disabled'" 
+      ng-click="!galaxyError && galaxy && !addressError && address ? doCreateGalaxy(ob.toAddress(galaxy), address): ''">
       {{ loading ? 'Creating' : 'Create' }}
     </button>
   </section>
   <!-- RAW AND SIGNED TRANSACTIONS-->
   <section class="transaction-data" 
-    ng-show="rawTx" 
+    ng-show="rawTx"
     ng-init="sent = false">
     <h4>Raw Tx</h4>
     <div class="raw-tx row col-md-8 text-code tx input-group mb-4">

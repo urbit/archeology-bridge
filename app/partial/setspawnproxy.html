@@ -1,25 +1,29 @@
-<div id="allow-transfer" 
+<div id="set-spawn-proxy" 
   class="col-md-12 transaction" 
   ng-init="loadAddresses(); shipName = $routeParams.p != 'offline' ? $routeParams.p : ''">
   <span class="address row text-700">
     {{ wallet.getAddressString() }}
   </span>
   <section class="general-information mb-8 mt-20">
-    <h1 id="action-title row">Allow transfer</h1>
-    <div class="help-text row mb-4">
-      <p class="col-md-8">This transaction allows the given address to transfer ownership of this ship. This can be used to transfer a ship to a pool, which can then issue a token in return for a star. 
+    <h1 id="action-title row">Set spawn proxy</h1>
+    <div class="help-text row">
+      <p class="col-md-8">Grant the right to spawn ships belonging to this star or galaxy.
       </p>
       <p class="col-md-8 red" ng-show="offline">You are in offline mode. Please copy and paste the transaction below into an appropriate client.
       </p>
     </div>
     <div class="label-group">
-      <h4 class="sub-title">Allow transfer of:</h4>
-      <h2 class="ship-name monospace blue" ng-show="shipName != ''">
+      <h4 class="sub-title">Launch ships on behalf of:</h4>
+      <h2 class="ship-name blue monospace mt-0" ng-show="shipName != ''">
         {{ shipName[0] == '~' ? shipName : '~' + shipName }}
       </h2>
     </div>
   </section>
   <section class="transaction-params mb-8">
+    <div class="button-group slim-input-group mb-4 input-group mb-4 toggle-group" ng-init="grant=true">
+      <button ng-class="grant ? 'btn btn-secondary' : 'btn'" ng-click="grant = !grant">Grant</button>
+      <button ng-class="!grant ? 'btn btn-warning' : 'btn'" ng-click="grant = !grant">Revoke</button>
+    </div>
     <!-- show this offline -->
     <div ng-init="shipError = false" 
       ng-class="shipError ? 'error input-group mb-4' : 'input-group mb-4'" 
@@ -28,13 +32,19 @@
         class="col-md-8 monospace" 
         ng-change="shipError = valShip(ob.toAddress(shipName))" 
         ng-model="shipName" 
-        value="Star Name" 
+        value="Ship Name" 
         placeholder="ship">
       <div class="error-label">{{ shipName }} is not a ship</div>
     </div>
     <!-- /show this offline -->
-    <div ng-init="addressError = false" ng-class="addressError ? 'error input-group mb-4' : 'input-group mb-4'">
-      <input type="text" class="col-md-12 monospace" ng-change="addressError = valAddress(poolAddress)" ng-model="poolAddress" value="Address" placeholder="pool-address">
+    <div ng-init="addressError = false" 
+      ng-class="addressError ? 'error input-group mb-4' : 'input-group mb-4'">
+      <input type="text" 
+        class="monospace col-md-12" 
+        ng-change="addressError = valAddress(address)" 
+        ng-model="address" 
+        value="Address" 
+        placeholder="address">
       <div class="error-label">Not a valid address</div>
     </div>
     <!-- show these offline -->
@@ -69,13 +79,15 @@
     <!-- /show these offline -->
     <div class="input-group mb-4 row">
       <div class="checkbox-container">
-        <div ng-class="checked ? 'checkbox checked' : 'checkbox'" ng-click="checked = checked == true ? false : true"></div>
+        <div ng-class="checked ? 'checkbox checked' : 'checkbox'" 
+          ng-click="checked = checked == true ? false : true">
+        </div>
       </div>
       <label class="action-confirmation ml-4" ng-click="checked = checked == true ? false : true">Yes I am sure</label>
     </div>
     <button class="btn btn-tetiary" ng-click="path('state')" >&#8592 Back</button>
-    <button ng-class="!loading && checked && !addressError && poolAddress ? 'btn btn-secondary' : 'btn disabled'" 
-      ng-click="checked && !addressError && poolAddress ? doSetTransferProxy(ob.toAddress(shipName), poolAddress) : ''" >
+    <button ng-class="!loading && checked && address && !addressError ? 'btn btn-secondary' : 'btn disabled'" 
+      ng-click="address && checked && !addressError ? doSetSpawnProxy(ob.toAddress(shipName), address) : ''" >
       {{ loading ? 'Creating' : 'Create' }}
     </button>
   </section>
