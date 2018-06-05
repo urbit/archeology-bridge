@@ -937,7 +937,7 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
     $scope.readIsState = function(ship, stat) {
       $scope.validateShip(ship, function() {
         $scope.validateState(stat, function() {
-          $scope.getIsState(ship, stat, put);
+          $scope.getIsActive(ship, put);
         });
       });
       function put(data) {
