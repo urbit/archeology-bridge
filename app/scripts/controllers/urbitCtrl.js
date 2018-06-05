@@ -1136,7 +1136,7 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
       function checkPermission(data) {
         if (data[0] != $scope.wallet.getAddressString())
           return $scope.notifier.danger("Insufficient permissions.");
-        $scope.getOwner(galaxy, checkAvailable);
+        $scope.getIsOwner(galaxy, address, checkAvailable);
       }
       function checkAvailable(data) {
         if (data[0].length > 0)
