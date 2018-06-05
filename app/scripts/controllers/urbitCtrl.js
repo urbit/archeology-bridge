@@ -795,7 +795,7 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
     }
     $scope.getIsSpawnProxy = function(ship, address, callback) {
       $scope.readContractData($scope.contracts.ships,
-        "isSpawnProxy(uint16,address)",
+        "isSpawnProxy(uint32,address)",
         [ship, address],
         ["bool"],
         callback
