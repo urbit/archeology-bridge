@@ -50,7 +50,8 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
     $scope.contracts.ships = "0xe0834579269eac6beca2882a6a21f6fb0b1d7196";
     $scope.contracts.votes = "0x0654b24a5da81f6ed1ac568e802a9d6b21483561";
     $scope.contracts.spark = "0x56db68f29203ff44a803faa2404a44ecbb7a7480";
-    $scope.contracts.constitution = '0x56db68f29203ff44a803faa2404a44ecbb7a7480';
+    //$scope.contracts.constitution = '0x56db68f29203ff44a803faa2404a44ecbb7a7480';
+    $scope.contracts.constitution = '0x098b6cb45da68c31c751d9df211cbe3056c356d1'
 
     $scope.ajaxReq = ajaxReq;
     $scope.visibility = "interactView";
