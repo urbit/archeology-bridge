@@ -1220,15 +1220,17 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
       }
       // user needs to be owner of sponsor or spawn proxy of sponsor
       function checkRights() {
+        //transact();
         $scope.getIsSpawnProxy(sponsor, $scope.wallet.getAddressString(),
         function(data) {
           if (data[0]) return transact();
           $scope.checkOwnership(sponsor, transact);
         });
       }
+
       function transact() {
         $scope.doTransaction($scope.contracts.constitution,
-          "launch(uint32,address)",
+          "spawn(uint32,address)",
           [ship, addr]
         );
       }
