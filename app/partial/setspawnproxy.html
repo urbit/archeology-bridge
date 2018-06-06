@@ -20,10 +20,6 @@
     </div>
   </section>
   <section class="transaction-params mb-8">
-    <div class="button-group slim-input-group mb-4 input-group mb-4 toggle-group" ng-init="grant=true">
-      <button ng-class="grant ? 'btn btn-secondary' : 'btn'" ng-click="grant = !grant">Grant</button>
-      <button ng-class="!grant ? 'btn btn-warning' : 'btn'" ng-click="grant = !grant">Revoke</button>
-    </div>
     <!-- show this offline -->
     <div ng-init="shipError = false" 
       ng-class="shipError ? 'error input-group mb-4' : 'input-group mb-4'" 

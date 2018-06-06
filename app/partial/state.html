@@ -93,7 +93,7 @@
                 <li ng-show="ship.address < 65536">
                   <a class="" href='' ng-click="path('state/' + ship.name + '/allowtransfer')">Allow transfer</a>
                 </li>
-                <li>
+                <li ng-show="ship.address < 65536">
                   <a class="" href='' ng-click="path('state/' + ship.name + '/setspawnproxy')">Set spawn proxy</a>
                 </li>
                 <li>

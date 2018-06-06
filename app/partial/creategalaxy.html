@@ -1,4 +1,4 @@
-<div id=create-galaxy" 
+<div id="create-galaxy" 
   class="col-md-12 transaction" 
   ng-init="loadAddresses();">
   <span class="address text-700 row">
@@ -70,8 +70,8 @@
     <!-- /show these offline -->
     <button class="btn btn-tetiary" 
       ng-click="path('state')">&#8592 Back</button>
-    <button ng-class="!loading && !galaxyError && galaxy && !addressError && address && !loading? 'btn btn-secondary': 'btn disabled'" 
-      ng-click="!galaxyError && galaxy && !addressError && address ? doCreateGalaxy(ob.toAddress(galaxy), address): ''">
+    <button ng-class="!loading && !galaxyError && galaxy && !addressError && address ? 'btn btn-secondary' : 'btn disabled'" 
+      ng-click="!galaxyError && galaxy && !addressError && address ? doCreateGalaxy(ob.toAddress(galaxy), address) : '' ">
       {{ loading ? 'Creating' : 'Create' }}
     </button>
   </section>

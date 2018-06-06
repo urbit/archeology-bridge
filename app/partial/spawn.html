@@ -7,7 +7,7 @@
   <section class="general-information mb-8 mt-20">
     <h1 id="action-title row">Spawn</h1>
     <div class="help-text row">
-      <p class="col-md-8">In order to spawn a ship, the ship must be latent and you must be the owner of the ship's parent. Input <code>0</code> to make the ship available immediately.
+      <p class="col-md-8">In order to spawn a ship, the ship must be latent and you must be the owner of the ship's parent.
       </p>
       <p class="col-md-8 red" ng-show="offline">You are in offline mode. Please copy and paste the transaction below into an appropriate client.
       </p>
@@ -42,7 +42,7 @@
     <!-- /show this offline -->
     <div class="input-group mb-4">
       <button class="btn btn-primary" ng-click="ship = toShipName(getChildCandidate(ob.toAddress(shipName)))">Suggest valid ship</button>
-      <button ng-show="!offline" ng-class="isState || !ship ? 'btn disabled' : 'btn btn-secondary'" ng-click="readIsState(ob.toAddress(ship), 0)">Confirm availability</button>
+      <button ng-show="!offline" ng-class="hasOwner || !ship ? 'btn disabled' : 'btn btn-secondary'" ng-click="readHasOwner(ob.toAddress(ship))">Confirm availability</button>
     </div>
     <div ng-init="addressError = false" ng-class="addressError ? 'error input-group mb-4' : 'input-group mb-4'">
       <input type="text" class="col-md-12 monospace" ng-change="addressError = valAddress(address)" ng-model="address" value="Address" placeholder="new-address">

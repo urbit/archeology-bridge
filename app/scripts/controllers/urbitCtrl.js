@@ -724,7 +724,7 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
     $scope.getOwner = function(ship, callback) {
       $scope.readContractData($scope.contracts.ships,
         "getOwner(uint32)",
-        [ship, address],
+        [ship],
         ["address"],
         callback
       );
