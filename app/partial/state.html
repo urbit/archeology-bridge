@@ -1,5 +1,4 @@
-<div 
-    ng-init="loadAddresses();">
+<div>
     <span id="" class="text-700 address">{{ wallet.getAddressString() }}</span>
     <h1 class="mt-20">Your Urbit Wallet</h1>
     <div class="online" ng-show="!offline">
@@ -33,55 +32,9 @@
             <h2 class="monospace">{{ ship.name }}</h2>
           </div>
           <div class="ship-actions row">
-            <div class="state-col col-md-2">
-              <div class="col-title text-600 h-font">
-                State:
-              </div>
-              <ul class="list-reset state-label text-700" ng-switch="ship.active">
-                <li ng-switch-when="true" class="green">
-                  Active
-                </li>
-                <li ng-switch-when="false" class="">
-                  Latent
-                 </li>
-              </ul>
-            </div>
             <div class="live-action-col col-md-3" ng-switch="ship.active">
               <div class="col-title text-600 h-font">
                 Actions
-              </div>
-              <ul class="list-reset" ng-switch-when="false">
-                <li>
-                  <a class="" href='' ng-click="path('state/' + ship.name + '/configurekeys')">Configure keys</a>
-                </li>
-                <li>
-                  <a class="" href='' ng-click="path('state/' + ship.name + '/transfer')">Transfer</a>
-                </li>
-                <li ng-show="ship.address < 65536">
-                  <a class="" href='' ng-click="path('state/' + ship.name + '/allowtransfer')">Allow transfer</a>
-                </li>
-                <li ng-show="ship.address < 65536">
-                  <a class="" href='' ng-click="path('state/' + ship.name + '/deposit')">Deposit</a>
-                </li>
-              </ul>
-              <ul class="list-reset gray-light" ng-switch-when="true">
-                <li>
-                  <u>Configure keys</u>
-                </li>
-                <li>
-                  <u>Transfer</u>
-                </li>
-                <li>
-                  <u>Allow transfer</u>
-                </li>
-                <li>
-                  <u>Deposit</u>
-                </li>
-              </ul>
-            </div>
-            <div class="live-action-col col-md-3" ng-switch="ship.active">
-              <div class="col-title buffer">
-                00
               </div>
               <ul class="list-reset" ng-switch-when="true">
                 <li ng-show="ship.address < 65536">
@@ -92,6 +45,9 @@
                 </li>
                 <li ng-show="ship.address < 65536">
                   <a class="" href='' ng-click="path('state/' + ship.name + '/allowtransfer')">Allow transfer</a>
+                </li>
+                <li ng-show="ship.address < 65536">
+                  <a class="" href='' ng-click="path('state/' + ship.name + '/deposit')">Deposit</a>
                 </li>
                 <li ng-show="ship.address < 65536">
                   <a class="" href='' ng-click="path('state/' + ship.name + '/setspawnproxy')">Set spawn proxy</a>
@@ -154,9 +110,6 @@
           </li>
           <li> 
             <a class="" href="" ng-click="path('state/offline/vote')">Vote</a>
-          </li>
-          <li> 
-            <a class="" href="" ng-click="path('state/offline/launch')">Launch child</a>
           </li>
           <li> 
             <a class="" href="" ng-click="path('state/offline/setspawnproxy')">Set spawn proxy</a>
