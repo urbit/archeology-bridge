@@ -1,6 +1,6 @@
 <div id="allow-transfer" 
   class="col-md-12 transaction" 
-  ng-init="loadAddresses(); shipName = $routeParams.p != 'offline' ? $routeParams.p : ''">
+  ng-init="shipName = $routeParams.p != 'offline' ? $routeParams.p : ''">
   <span class="address row text-700">
     {{ wallet.getAddressString() }}
   </span>
