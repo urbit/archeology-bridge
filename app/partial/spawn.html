@@ -1,6 +1,6 @@
 <div id="spawn" 
   class="col-md-12 transaction" 
-  ng-init="shipName = $routeParams.p != 'offline' ? $routeParams.p : ''">
+  ng-init="parentShipName = $routeParams.p != 'offline' ? $routeParams.p : ''">
   <span class="address row text-700">
     {{ wallet.getAddressString() }}
   </span>
@@ -14,35 +14,35 @@
     </div>
     <div class="label-group">
       <h4 class="sub-title text-700">Ship to spawn:</h4>
-      <h2 class="ship-name blue monospace mt-0" ng-show="ship">{{ formatShipName(ship) }}</h2>
+      <h2 class="ship-name blue monospace mt-0" ng-show="spawnName">{{ formatShipName(spawnName) }}</h2>
     </div>
   </section>
   <section class="transaction-params mb-8">
-    <div ng-init="shipError = false" 
-      ng-class="shipError ? 'error input-group mb-4' : 'input-group mb-4'">
-      <input sig type="text" 
-        ng-class="isState ? 'confirmed col-md-8 monospace' : 'col-md-8 monospace'" 
-        ng-change="shipError = valShip(ob.toAddress(ship)); isState = false" 
-        ng-model="ship" 
-        value="Star Name" 
+    <div ng-init="spawnNameError = false" 
+      ng-class="spawnNameError ? 'error input-group mb-4' : 'input-group mb-4'">
+      <input sig type="text"
+        ng-class="!hasOwner && spawnName ? 'confirmed col-md-8 monospace' : 'col-md-8 monospace'" 
+        ng-change="spawnNameError = valShip(ob.toAddress(spawnName)); hasOwner = true" 
+        ng-model="spawnName" 
+        value="Spawn Name" 
         placeholder="ship">
     </div>
     <!-- show this offline -->
-    <div ng-init="shipError = false" 
-      ng-class="shipError ? 'error input-group mb-4' : 'input-group mb-4'" 
+    <div ng-init="spawnNameError = false" 
+      ng-class="spawnNameError ? 'error input-group mb-4' : 'input-group mb-4'" 
       ng-show="offline">
       <input sig type="text" 
         class="col-md-8 monospace" 
-        ng-change="shipError = valShip(ob.toAddress(shipName))" 
-        ng-model="shipName" 
-        value="Star Name" 
+        ng-change="spawnNameError = valShip(ob.toAddress(parentShipName))" 
+        ng-model="parentShipName" 
+        value="Parent Name" 
         placeholder="parent-ship">
-      <div class="error-label">{{ shipName }} is not a ship</div>
+      <div class="error-label">{{ parentShipName }} is not a ship</div>
     </div>
     <!-- /show this offline -->
     <div class="input-group mb-4">
-      <button class="btn btn-primary" ng-click="ship = toShipName(getChildCandidate(ob.toAddress(shipName)))">Suggest valid ship</button>
-      <button ng-show="!offline" ng-class="hasOwner || !ship ? 'btn disabled' : 'btn btn-secondary'" ng-click="readHasOwner(ob.toAddress(ship))">Confirm availability</button>
+      <button class="btn btn-primary" ng-click="spawnName = toShipName(getSpawnCandidate(ob.toAddress(parentShipName)))">Suggest valid ship</button>
+      <button ng-show="!offline" ng-class="!hasOwner || !spawnName || spawnNameError ? 'btn disabled' : 'btn btn-secondary'" ng-click="readHasOwner(ob.toAddress(spawnName))">Confirm availability</button>
     </div>
     <div ng-init="addressError = false" ng-class="addressError ? 'error input-group mb-4' : 'input-group mb-4'">
       <input type="text" class="col-md-12 monospace" ng-change="addressError = valAddress(address)" ng-model="address" value="Address" placeholder="new-address">
@@ -86,9 +86,9 @@
       </div>
       <label class="action-confirmation ml-4" ng-click="checked = checked == true ? false : true">Yes I am sure</label>
     </div>
-    <button class="btn btn-tetiary" ng-click="path('state')" >&#8592 Back</button>
-    <button ng-class="!loading && checked && !shipError && ship && !addressError && address ? 'btn btn-secondary' : 'btn disabled'" 
-      ng-click="checked && !shipError && ship && !addressError && address ? doSpawn(ob.toAddress(ship), address): ''">
+    <button class="btn btn-tetiary" ng-click="wipeTx(); path('state')" >&#8592 Back</button>
+    <button ng-class="!loading && checked && !spawnNameError && spawnName && !addressError && address ? 'btn btn-secondary' : 'btn disabled'" 
+      ng-click="checked && !spawnNameError && spawnName && !addressError && address ? doSpawn(ob.toAddress(spawnName), address) : ''">
       {{ loading ? 'Creating' : 'Create' }}
     </button>
   </section>
