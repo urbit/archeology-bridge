@@ -32,11 +32,11 @@
             <h2 class="monospace">{{ ship.name }}</h2>
           </div>
           <div class="ship-actions row">
-            <div class="live-action-col col-md-3" ng-switch="ship.active">
+            <div class="live-action-col col-md-3">
               <div class="col-title text-600 h-font">
                 Actions
               </div>
-              <ul class="list-reset" ng-switch-when="true">
+              <ul class="list-reset">
                 <li ng-show="ship.address < 65536">
                   <a class="" href='' ng-click="path('state/' + ship.name + '/spawn')">Spawn</a>
                 </li>
@@ -63,32 +63,6 @@
                 </li>
                 <li ng-show="ship.address < 256">
                   <a class="" href='' ng-click="path('state/' + ship.name + '/vote')">Vote</a>
-                </li>
-              </ul>
-              <ul class="list-reset gray-light" ng-switch-when="false">
-                <li>
-                  <u>Spawn child</u>
-                </li>
-                <li>
-                  <u>Transfer</u>
-                </li>
-                <li>
-                  <u>Allow transfer</u>
-                </li>
-                <li>
-                  <u>Set spawn proxy</u>
-                </li>
-                <li>
-                  <u>Configure keys</u>
-                </li>
-                <li ng-show="ship.address > 255">
-                  <u>Escape</u>
-                </li>
-                <li>
-                  <u>Adopt/reject</u>
-                </li>
-                <li>
-                  <u>Vote</u>
                 </li>
               </ul>
             </div>
