@@ -37,7 +37,7 @@
                 Actions
               </div>
               <ul class="list-reset">
-                <li ng-show="ship.address < 65536">
+                <li ng-show="ship.address < 65536 && ship.hasBeenBooted">
                   <a class="" href='' ng-click="path('state/' + ship.name + '/spawn')">Spawn</a>
                 </li>
                 <li>
@@ -46,7 +46,7 @@
                 <li ng-show="ship.address < 65536">
                   <a class="" href='' ng-click="path('state/' + ship.name + '/allowtransfer')">Allow transfer</a>
                 </li>
-                <li ng-show="ship.address > 255 && ship.address < 65536">
+                <li ng-show="ship.address > 255 && ship.address < 65536 && !ship.hasBeenBooted">
                   <a class="" href='' ng-click="path('state/' + ship.name + '/deposit')">Deposit</a>
                 </li>
                 <li ng-show="ship.address < 65536">
