@@ -90,7 +90,7 @@
       <label class="action-confirmation ml-4" ng-click="checked = checked == true ? false : true">Yes I am sure</label>
     </div>
     <div ng-switch="constitution">
-      <button class="btn btn-tetiary" ng-click="path('state')" >&#8592 Back</button>
+      <button class="btn btn-tetiary" ng-click="wipeTx(); path('state')" >&#8592 Back</button>
       <button ng-switch-when="true" ng-class="!locked && address && checked ? 'btn btn-secondary' : 'btn disabled'" 
         ng-click="address && checked ? doCastConstitutionVote(ob.toAddress(shipName), address, voteYes) : ''">
         {{ loading ? 'Creating' : 'Create' }}

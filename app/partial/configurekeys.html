@@ -93,7 +93,7 @@
       </div>
       <label class="action-confirmation ml-4" ng-click="checked = checked == true ? false : true">Yes I am sure</label>
     </div>
-    <button class="btn btn-tetiary" ng-click="path('state')">&#8592 Back</button>
+    <button class="btn btn-tetiary" ng-click="wipeTx(); path('state')">&#8592 Back</button>
     <button ng-class="!loading && checked && encryptionKey && authenticationKey ? 'btn btn-secondary' : 'btn disabled'" 
       ng-click="checked && encryptionKey && authenticationKey && !encryptionKeyError && !authenticationKeyError ? doConfigureKeys(ob.toAddress(shipName), encryptionKey, authenticationKey, discontinuous) : ''">
       {{ loading ? 'Creating' : 'Create' }}
