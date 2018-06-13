@@ -25,11 +25,11 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
       if (!angular.equals($scope.ownedShips, $scope.tempOwnedShips) && $scope.tempOwnedShips && $scope.ownedShips) {
         // assign
         angular.copy($scope.tempOwnedShips, $scope.ownedShips);
-        if ($scope.pollCount > 0) {
+      }
+      if ($scope.pollCount > 0) {
           // stop pollling
           $scope.polling = false;
           $scope.pollCount = 0;
-        }
       }
       // Make sure there's a wallet loaded
       if ($scope.wallet) {
