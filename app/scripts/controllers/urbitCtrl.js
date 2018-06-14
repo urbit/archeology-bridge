@@ -768,6 +768,14 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
         callback
       );
     }
+    $scope.getEscapeRequest = function(ship, callback) {
+      $scope.readContractData($scope.contracts.ships,
+        "getEscapeRequest(uint32)",
+        [ship],
+        ["uint32"],
+        callback
+      );
+    }
     $scope.getPoolAssets = function(callback) {
       $scope.readContractData($rootScope.poolAddress,
         "getAllAssets()",
