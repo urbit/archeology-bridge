@@ -1180,8 +1180,10 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
     $scope.doApprove = function(address, ship) {
       $scope.loading = true;
       $scope.validateAddress(address, function () {
-        if ($scope.offline) return transact();
-        $scope.checkOwnership(ship, transact);
+        $scope.validateShip(ship, function () {
+          if ($scope.offline) return transact();
+          $scope.checkOwnership(ship, transact);
+        });
       });
       function transact() {
         $scope.doTransaction($scope.contracts.constitution,
