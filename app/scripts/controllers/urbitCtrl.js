@@ -664,14 +664,6 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
     //
     // GET: read contract data, pass the result to callback
     //
-    $scope.getShipsOwner = function(callback) {
-      $scope.readContractData($scope.contracts.ships,
-        "owner()",
-        [],
-        ["address"],
-        callback
-      );
-    }
     $scope.getConstitutionOwner = function(callback) {
       $scope.readContractData($scope.contracts.constitution,
         "owner()",
@@ -683,6 +675,14 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
     $scope.getVotesAddress = function(callback) {
       $scope.readContractData($scope.contracts.constitution,
         "votes()",
+        [],
+        ["address"],
+        callback
+      );
+    }
+    $scope.getShipsOwner = function(callback) {
+      $scope.readContractData($scope.contracts.ships,
+        "owner()",
         [],
         ["address"],
         callback
@@ -717,14 +717,6 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
         "isActive(uint32)",
         [ship],
         ["bool"],
-        callback
-      );
-    }
-    $scope.getPoolAssets = function(callback) {
-      $scope.readContractData($rootScope.poolAddress,
-        "getAllAssets()",
-        [],
-        ["uint16[]"],
         callback
       );
     }
@@ -773,6 +765,14 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
         "isSpawnProxy(uint32,address)",
         [ship, address],
         ["bool"],
+        callback
+      );
+    }
+    $scope.getPoolAssets = function(callback) {
+      $scope.readContractData($rootScope.poolAddress,
+        "getAllAssets()",
+        [],
+        ["uint16[]"],
         callback
       );
     }
