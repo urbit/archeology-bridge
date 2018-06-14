@@ -1190,6 +1190,24 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
         );
       }
     }
+    $scope.doSafeTransferFrom = function(fromAddr, toAddr, ship) {
+      $scope.loading = true;
+      $scope.validateAddress(fromAddr, function () {
+        $scope.validateAddress(toAddr, function () {
+          $scope.validateShip(ship, function () {
+            if ($scope.offline) return transact();
+            // TODO: add check to validate that the caller has been approved to initiate transfer
+            transact();
+          });
+        });
+      });
+      function transact() {
+        $scope.doTransaction($scope.contracts.constitution,
+          "safeTransferFrom(address,address,uint256)",
+          [fromAddr, toAddr, ship]
+        );
+      }
+    }
     $scope.doCastConstitutionVote = function(galaxy, addr, vote) {
       $scope.loading = true;
       $scope.validateGalaxy(galaxy, function() {
