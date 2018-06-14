@@ -776,6 +776,14 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
         callback
       );
     }
+    $scope.getTransferringFor = function(address, callback) {
+      $scope.readContractData($scope.contracts.ships,
+        "getTransferringFor(address)",
+        [ship],
+        ["uint32[]"],
+        callback
+      );
+    }
     $scope.getPoolAssets = function(callback) {
       $scope.readContractData($rootScope.poolAddress,
         "getAllAssets()",
