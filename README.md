@@ -112,6 +112,6 @@ Urbit constitution.
 ### Useful addresses
 Constitution owner (is allowed to create galaxies): `0x6deffb0cafdb11d175f123f6891aa64f01c24f7d`
 
-Test pool: `0xb71c0b6cee1bcae56dfe95cd9d3e41ddd7eafc43`
+Test pool: `0x0724ee9912836c2563eee031a739dda6dd775333`
 
 
