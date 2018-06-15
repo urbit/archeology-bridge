@@ -680,6 +680,14 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
         callback
       );
     }
+    $scope.getCanEscapeTo = function(ship, sponsor, callback) {
+      $scope.readContractData($scope.contracts.constitution,
+        "canEscapeTo(uint32,uint32)",
+        [ship, sponsor],
+        ["bool"],
+        callback
+      );
+    }
     $scope.getShipsOwner = function(callback) {
       $scope.readContractData($scope.contracts.ships,
         "owner()",
@@ -953,10 +961,22 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
         $scope.notifier.danger("Ship is active.");
       });
     }
+    $scope.checkCanEscapeTo = function(ship, sponsor, next) {
+      $scope.getCanEscapeTo(ship, sponsor, function(data) {
+        if (data[0]) return next();
+        $scope.notifier.danger("Ship " + ship + " cannot escape to ship " + sponsor + ".");
+      });
+    }
     $scope.checkEscape = function(ship, sponsor, next) {
       $scope.getIsRequestingEscapeTo(ship, sponsor, function(data) {
         if (data[0]) return next();
         $scope.notifier.danger("Escape doesn't match.");
+      });
+    }
+    $scope.checkHasBeenBooted = function(sponsor, next) {
+      $scope.getHasBeenBooted(sponsor, function(data) {
+        if (data[0]) return next() 
+        $scope.notifier.danger("Ship has not been booted.");
       });
     }
     //
@@ -1030,17 +1050,11 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
       $scope.validateShip(ship, function() {
         $scope.validateAddress(addr, function() {
           if ($scope.offline) return transact();
-          $scope.checkIsLatent(ship, checkHasBeenBooted);
+          $scope.checkIsLatent(ship, function() {
+            $scope.checkHasBeenBooted(sponsor, checkParent);
+          });
         });
       });
-      // sponsor must have been booted in order to spawn ship
-      function checkHasBeenBooted() {
-        $scope.getHasBeenBooted(sponsor, function(data) {
-          if (!data[0])
-            return $scope.notifier.danger("Ship has not been booted.");
-          checkParent();
-        });
-      }
       // ship needs to be galaxy, or its parent needs to be living
       function checkParent() {
         if (ship < 256) return checkRights();
@@ -1133,7 +1147,11 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
       $scope.validateChild(ship, function() {
         $scope.validateParent(sponsor, function() {
           if ($scope.offline) return transact();
-          $scope.checkOwnership(ship, transact);
+          $scope.checkOwnership(ship, function() {
+            $scope.checkHasBeenBooted(sponsor, function() {
+              $scope.checkCanEscapeTo(ship, sponsor, transact);
+            });
+          });
         });
       });
       function transact() {
