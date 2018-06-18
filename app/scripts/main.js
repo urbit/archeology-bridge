@@ -133,14 +133,6 @@ app.config(['$routeProvider', '$locationProvider',
             template: templateService.type
             //controller: 'urbitCtrl'
         })
-        .when('/state/:p/launch', {
-            template: templateService.launch
-            //controller: 'urbitCtrl'
-        })
-        .when('/state/:p/start', {
-            template: templateService.start
-            //controller: 'urbitCtrl'
-        })
         .when('/state/:p/escape', {
             template: templateService.escape
             //controller: 'urbitCtrl'
@@ -151,14 +143,6 @@ app.config(['$routeProvider', '$locationProvider',
         })
         .when('/state/:p/vote', {
             template: templateService.vote
-            //controller: 'urbitCtrl'
-        })
-        .when('/state/:p/rekey', {
-            template: templateService.rekey
-            //controller: 'urbitCtrl'
-        })
-        .when('/state/:p/launchrights', {
-            template: templateService.launchRights
             //controller: 'urbitCtrl'
         })
         .when('/state/:p/allowtransfer', {
@@ -183,6 +167,18 @@ app.config(['$routeProvider', '$locationProvider',
         })
         .when('/state/creategalaxy', {
             template: templateService.createGalaxy
+            //controller: 'urbitCtrl'
+        })
+        .when('/state/:p/spawn', {
+            template: templateService.spawn
+            //controller: 'urbitCtrl'
+        })
+        .when('/state/:p/setspawnproxy', {
+            template: templateService.setSpawnProxy
+            //controller: 'urbitCtrl'
+        })
+        .when('/state/:p/configurekeys', {
+            template: templateService.configureKeys
             //controller: 'urbitCtrl'
         })
         .when('/type', {

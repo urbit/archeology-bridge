@@ -1,18 +1,17 @@
 'use strict';
 const state = require('../../partial/state.html');
-const start = require('../../partial/start.html');
-const launch = require('../../partial/launch.html');
 const mode = require('../../partial/mode.html');
-const launchRights = require('../../partial/launchrights.html');
 const allowTransfer = require('../../partial/allowtransfer.html');
 const deposit = require('../../partial/deposit.html');
 const withdraw = require('../../partial/withdraw.html');
 const transfer = require('../../partial/transfer.html');
-const rekey = require('../../partial/rekey.html');
 const escape = require('../../partial/escape.html');
 const adopt = require('../../partial/adopt.html');
 const vote = require('../../partial/vote.html');
 const createGalaxy = require('../../partial/creategalaxy.html');
+const spawn = require('../../partial/spawn.html');
+const setSpawnProxy = require('../../partial/setspawnproxy.html');
+const configureKeys = require('../../partial/configurekeys.html');
 const type = require('../../partial/type.html');
 
 var templateService = {
@@ -21,16 +20,15 @@ var templateService = {
     withdraw: withdraw,
     mode: mode,
     transfer: transfer,
-    rekey: rekey,
-    launchRights: launchRights,
     allowTransfer: allowTransfer,
     deposit: deposit,
-    start: start,
     adopt: adopt,
     vote: vote,
-    launch: launch,
     escape: escape,
-    createGalaxy: createGalaxy
+    createGalaxy: createGalaxy,
+    spawn: spawn,
+    setSpawnProxy: setSpawnProxy,
+    configureKeys: configureKeys
 };
 
 module.exports = templateService;
