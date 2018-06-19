@@ -787,7 +787,15 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
     $scope.getTransferringFor = function(address, callback) {
       $scope.readContractData($scope.contracts.ships,
         "getTransferringFor(address)",
-        [ship],
+        [address],
+        ["uint32[]"],
+        callback
+      );
+    }
+    $scope.getSpawningFor = function(address, callback) {
+      $scope.readContractData($scope.contracts.ships,
+        "getSpawningFor(address)",
+        [address],
         ["uint32[]"],
         callback
       );
