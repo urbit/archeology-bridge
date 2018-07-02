@@ -67,14 +67,13 @@ var decryptWalletCtrl        = require('./controllers/decryptWalletCtrl');
 var globalService            = require('./services/globalService');
 var walletService            = require('./services/walletService');
 var templateService          = require('./services/templateService');
-var obService                = require('./services/nom.js');
+var concli                   = require('./services/urbit-constitution-client.js');
 var addressFieldDrtv         = require('./directives/addressFieldDrtv');
 var QRCodeDrtv               = require('./directives/QRCodeDrtv');
 var walletDecryptDrtv        = require('./directives/walletDecryptDrtv');
 var muwHeader                = require('./directives/muwHeader');
 var fileReaderDrtv           = require('./directives/fileReaderDrtv');
 var urbitCtrl                = require('./controllers/urbitCtrl');
-console.log('obService', obService);
 var app = angular.module('mewApp', ['pascalprecht.translate', 'ngSanitize','ngAnimate', 'ngRoute']);
 app.config(['$compileProvider', function($compileProvider) {
   //$compileProvider.aHrefSanitizationWhitelist(/^\s*(|blob|https|mailto):/);
@@ -92,7 +91,7 @@ app.config(['$animateProvider', function($animateProvider) {
 app.factory('globalService', ['$http', '$httpParamSerializerJQLike', globalService]);
 app.factory('walletService', walletService);
 app.factory('templateService', templateService);
-app.factory('obService', function() {return obService});
+app.factory('concli', function() {return concli});
 app.directive('addressField', ['$compile', addressFieldDrtv]);
 app.directive('qrCode', QRCodeDrtv);
 app.directive('onReadFile', fileReaderDrtv);
@@ -101,7 +100,7 @@ app.directive('muwHeader', muwHeader);
 app.controller('tabsCtrl', ['$scope', 'globalService', '$translate', '$sce', '$location', '$rootScope', 'walletService', tabsCtrl]);
 app.controller('viewCtrl', ['$scope', 'globalService', '$sce', viewCtrl]);
 app.controller('decryptWalletCtrl', ['$scope', '$sce', '$location', 'walletService', decryptWalletCtrl]);
-app.controller('urbitCtrl', ['$scope', '$sce', '$routeParams', '$location', '$rootScope', '$timeout', 'walletService', 'obService', urbitCtrl]);
+app.controller('urbitCtrl', ['$scope', '$sce', '$routeParams', '$location', '$rootScope', '$timeout', 'walletService', 'concli', urbitCtrl]);
 app.directive("sig", function(){
   return {
     require: 'ngModel',
