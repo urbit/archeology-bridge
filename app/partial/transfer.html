@@ -34,7 +34,7 @@
     </div>
     <!-- /show this offline -->
     <div ng-init="addressError = false" ng-class="addressError ? 'error input-group mb-4' : 'input-group mb-4'">
-      <input type="text" class="monospace col-md-12" ng-change="addressError = valAddress(address)" ng-model="address" value="Address" placeholder="address">
+      <input type="text" class="monospace col-md-12" ng-change="addressError = concli.valAddress(address)" ng-model="address" value="Address" placeholder="address">
       <div class="error-label">Not a valid address</div>
     </div>
     <div class="input-group mb-4 row">
@@ -83,7 +83,7 @@
     </div>
     <button class="btn btn-tetiary" ng-click="wipeTx(); path('state')" >&#8592 Back</button>
     <button ng-class="!loading && checked && !addressError && address ? 'btn btn-secondary' : 'btn disabled'" 
-      ng-click="checked && !addressError && address ? doTransferShip(ob.toAddress(shipName), address, rekey) : ''" >
+      ng-click="checked && !addressError && address ? doTransferShip(concli.toAddress(shipName), address, rekey) : ''" >
       {{ loading ? 'Creating' : 'Create' }}
     </button>
   </section>

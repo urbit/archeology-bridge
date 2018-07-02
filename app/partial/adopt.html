@@ -34,7 +34,7 @@
       ng-show="offline">
       <input sig type="text" 
         class="col-md-8 monospace" 
-        ng-change="parentShipError = valShip(ob.toAddress(parentShipName))" 
+        ng-change="parentShipError = concli.valShip(concli.toAddress(parentShipName))" 
         ng-model="parentShipName" 
         value="Star Name" 
         placeholder="parent-ship">
@@ -45,7 +45,7 @@
       <input sig type="text" 
         ng-class="isState ? 'confirmed col-md-8 monospace' : 'col-md-8 monospace'" 
         ng-model="ship" 
-        ng-change="shipError = valShip(ob.toAddress(ship))"
+        ng-change="shipError = concli.valShip(concli.toAddress(ship))"
         value="Star Name" 
         placeholder="ship-to-adopt">
     </div>
@@ -87,7 +87,7 @@
     </div>
     <button class="btn btn-tetiary" ng-click="wipeTx(); path('state')" >&#8592 Back</button>
     <button ng-class="!loading && checked && ship ? 'btn btn-secondary' : 'btn disabled'" 
-      ng-click="checked && ship ? adopt ? doAdopt(ob.toAddress(parentShipName), ob.toAddress(ship)) : doReject(ob.toAddress(parentShipName), ob.toAddress(ship)) : ''" >
+      ng-click="checked && ship ? adopt ? doAdopt(concli.toAddress(parentShipName), concli.toAddress(ship)) : doReject(concli.toAddress(parentShipName), concli.toAddress(ship)) : ''" >
       {{ loading ? 'Creating' : 'Create' }}
     </button>
   </section>
