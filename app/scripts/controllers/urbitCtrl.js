@@ -52,7 +52,7 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
     $scope.contracts.polls = "0x0654b24a5da81f6ed1ac568e802a9d6b21483561";
     $scope.contracts.pool  = "0x0724ee9912836c2563eee031a739dda6dd775333";
     //$scope.contracts.constitution = '0x56db68f29203ff44a803faa2404a44ecbb7a7480';
-    $scope.contracts.constitution = '0x098b6cb45da68c31c751d9df211cbe3056c356d1'
+    $scope.contracts.constitution = '0x098b6cb45da68c31c751d9df211cbe3056c356d1';
 
     $scope.ajaxReq = ajaxReq;
     $scope.visibility = "interactView";
@@ -79,7 +79,6 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
         functions: [],
         selectedFunc: null
     }
-    //$scope.selectedAbi = ajaxReq.abiList[0];
     $scope.showRaw = false;
     $scope.$on('nodeChanged', function(e, d) {
       if ($scope.wallet) {
@@ -111,7 +110,6 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
             nonce: null,
             gasPrice: null
         }
-
     });
     $scope.$watch('contract.address', function(newValue, oldValue) {
         if ($scope.Validator.isValidAddress($scope.contract.address)) {
@@ -148,21 +146,6 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
     $scope.toEther = function(wei) {
       return etherUnits.toEther(wei, "wei");
     }
-    $scope.selectExistingAbi = function(index) {
-        $scope.selectedAbi = ajaxReq.abiList[index];
-        $scope.contract.address = $scope.selectedAbi.address;
-        $scope.addressDrtv.ensAddressField = $scope.selectedAbi.address;
-        $scope.addressDrtv.showDerivedAddress = false;
-        $scope.dropdownExistingContracts = false;
-        $scope.contract.selectedFunc=null
-        $scope.dropdownContracts = false;
-
-        if ($scope.initContractTimer) clearTimeout($scope.initContractTimer);
-        $scope.initContractTimer = setTimeout(function() {
-            $scope.initContract();
-        }, 50);
-    }
-
     $scope.generateTxOffline = function() {
         if (!ethFuncs.validateEtherAddress($scope.tx.to)) {
             $scope.notifier.danger(globalFuncs.errorMsgs[5]);
@@ -189,7 +172,6 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
             if (!$scope.$$phase) $scope.$apply();
         });
     }
-
     $scope.generateTx = function() {
         try {
             if ($scope.wallet == null)
@@ -242,17 +224,6 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
             }
         });
     }
-    $scope.setVisibility = function(str) {
-        $scope.visibility = str;
-    }
-    $scope.selectFunc = function(index) {
-        $scope.contract.selectedFunc = { name: $scope.contract.functions[index].name, index: index };
-        if (!$scope.contract.functions[index].inputs.length) {
-            $scope.readFromContract();
-            $scope.showRead = false;
-        } else $scope.showRead = true;
-        $scope.dropdownContracts = !$scope.dropdownContracts;
-    }
     $scope.getTxData = function() {
         var curFunc = $scope.contract.functions[$scope.contract.selectedFunc.index];
         var fullFuncName = ethUtil.solidityUtils.transformToFullName(curFunc);
@@ -269,51 +240,6 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
         }
         return '0x' + funcSig + ethUtil.solidityCoder.encodeParams(types, values);
     }
-    $scope.readFromContract = function() {
-        ajaxReq.getEthCall({ to: $scope.contract.address, data: $scope.getTxData() }, function(data) {
-            if (!data.error) {
-                var curFunc = $scope.contract.functions[$scope.contract.selectedFunc.index];
-                var outTypes = curFunc.outputs.map(function(i) {
-                    return i.type;
-                });
-                var decoded = ethUtil.solidityCoder.decodeParams(outTypes, data.data.replace('0x', ''));
-                for (var i in decoded) {
-                    if (decoded[i] instanceof BigNumber) curFunc.outputs[i].value = decoded[i].toFixed(0);
-                    else curFunc.outputs[i].value = decoded[i];
-                }
-            } else throw data.msg;
-
-        });
-    }
-    $scope.initContract = function() {
-        try {
-            if (!$scope.Validator.isValidAddress($scope.contract.address)) throw globalFuncs.errorMsgs[5];
-            else if (!$scope.Validator.isJSON($scope.contract.abi)) throw globalFuncs.errorMsgs[26];
-            $scope.contract.functions = [];
-            var tAbi = JSON.parse($scope.contract.abi);
-            for (var i in tAbi)
-                if (tAbi[i].type == "function") {
-                    tAbi[i].inputs.map(function(i) { i.value = ''; });
-                    $scope.contract.functions.push(tAbi[i]);
-                }
-            $scope.showReadWrite = true;
-
-        } catch (e) {
-            $scope.notifier.danger(e);
-        }
-    }
-    $scope.generateContractTx = function() {
-        if (!$scope.wd) {
-            $scope.notifier.danger(globalFuncs.errorMsgs[3]);
-            return;
-        }
-        $scope.tx.data = $scope.getTxData();
-        $scope.tx.to = $scope.contract.address;
-        //$scope.sendContractModal.open();
-        // just generate the transaction
-        $scope.generateTx();
-    }
-    //
     $scope.buildTransactionData = function(func, input) {
         var funcSig = ethFuncs.getFunctionSignature(func);
         var typeName = ethUtil.solidityUtils.extractTypeName(func);
@@ -399,13 +325,6 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
           } else throw data.msg;
         });
     }
-    //$scope.loadAddresses = function() {
-    //  $scope.contracts = {};
-    //  $scope.contracts.ships = "0xe0834579269eac6beca2882a6a21f6fb0b1d7196";
-    //  $scope.contracts.votes = "0x0654b24a5da81f6ed1ac568e802a9d6b21483561";
-    //  $scope.contracts.spark = "0x56db68f29203ff44a803faa2404a44ecbb7a7480";
-    //  $scope.contracts.constitution = '0x56db68f29203ff44a803faa2404a44ecbb7a7480';
-    //}
     ////
     //// VALIDATE: validate input data
     ////
@@ -439,11 +358,6 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
         return $scope.notifier.danger(address + " is not a valid Ethereum address.");
       return next();
     }
-    $scope.validateTimestamp = function(timestamp, next) {
-      if (timestamp < 0 || timestamp > 4200000000)
-        return $scope.notifier.danger("Weird timestamp: " + timestamp);
-      return next();
-    }
     $scope.validateBytes32 = function(bytes, next) {
       if (bytes.length > 32)
         return $scope.notifier.danger("Input too long: " + bytes);
@@ -459,7 +373,6 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
         return false;
       }
     }
-
     $scope.valStar = function(star) {
       if (star < 256 || star > 65535 || typeof star !== 'number') {
         return true;
@@ -469,13 +382,11 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
     }
     $scope.valShip = function(ship) {
       if (ship < 0 || ship > 4294967295 || typeof ship !== 'number') {
-
         return true;
       } else {
         return false;
       }
     }
-
     $scope.valAddress = function(address) {
       if (!ethFuncs.validateEtherAddress(address)) {
         return true;
@@ -483,88 +394,9 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
         return false;
       }
     }
-
-    $scope.valTimestamp = function(timestamp) {
-      if (timestamp < 0 || timestamp > 4200000000) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-
     //
-    //UI Conviences
+    //UI Conveniences
     //
-    $scope.isPast = function(secs) {
-      if (!secs) {
-        return false
-      }
-      return secs <= (Date.now() / 1000);
-    }
-    $scope.remainingSecs = function(secs) {
-      return secs - (Date.now() / 1000);
-    }
-    $scope.secToString = function(secs) {
-      if (secs <= 0) {
-        return 'Completed';
-      }
-      secs = Math.round(secs)
-      var min = 60;
-      var hour = 60 * min;
-      var day = 24 * hour;
-      var week = 7 * day;
-      var year = 52 * week;
-      var fy = function(s) {
-        if (s < year) {
-          return ['', s];
-        } else {
-          return [Math.round(s / year) + 'y', s % year];
-        }
-      }
-      var fw = function(tup) {
-        var str = tup[0];
-        var sec = tup[1];
-        if (sec < week) {
-          return [str, sec];
-        } else {
-          return [str + ' ' + Math.round(sec / week) + 'w', sec % week];
-        }
-      }
-      var fd = function(tup) {
-        var str = tup[0];
-        var sec = tup[1];
-        if (sec < day) {
-          return [str, sec];
-        } else {
-          return [str + ' ' + Math.round(sec / day) + 'd', sec % day];
-        }
-      }
-      var fh = function(tup) {
-        var str = tup[0];
-        var sec = tup[1];
-        if (sec < hour) {
-          return [str, sec];
-        } else {
-          return [str + ' ' + Math.round(sec / hour) + 'h', sec % hour];
-        }
-      }
-      var fm = function(tup) {
-        var str = tup[0];
-        var sec = tup[1];
-        if (sec < min) {
-          return [str, sec];
-        } else {
-          return [str + ' ' + Math.round(sec / min) + 'm', sec % min];
-        }
-      }
-      var fs = function(tup) {
-        var str = tup[0];
-        var sec = tup[1];
-        return str + ' ' + sec + 's';
-      }
-      return fs(fm(fh(fd(fw(fy(secs)))))).trim();
-    }
-
     $scope.formatShipName = function(ship) {
       if (!ship) {
         return ship;
@@ -578,7 +410,6 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
         return ship;
       }
     }
-
     $scope.buildOwnedShips = function(address) {
       $scope.tmp = {}
       // zero out struct?
@@ -600,7 +431,6 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
         }
       });
     }
-
     $scope.buildShipData = function(address, terminate) {
       function put(data) {
         $scope.tmp[address] = {};
@@ -617,12 +447,10 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
       }
       $scope.getHasBeenBooted(address, put);
     }
-
     $scope.setPoolAddress = function(x) {
       $rootScope.poolAddress = x;
       $scope.poolAddress = $rootScope.poolAddress;
     }
-
     $scope.toShipName = function(address) {
       if (address > -1 && address < 256) {
         return $scope.ob.toGalaxyName(address);
