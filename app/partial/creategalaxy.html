@@ -24,7 +24,7 @@
       ng-class="galaxyError ? 'error input-group mb-4' : 'input-group mb-4'">
       <input sig type="text" 
         class="col-md-4 monospace" 
-        ng-change="galaxyError = concli.valGalaxy(concli.toAddress(galaxy))" 
+        ng-change="galaxyError = !constitution.valGalaxy(constitution.toAddress(galaxy))" 
         ng-model="galaxy" value="Galaxy Name" 
         placeholder="galaxy">
       <div class="error-label">Ship {{ galaxy }} is not a galaxy</div>
@@ -33,7 +33,7 @@
       ng-class="addressError ? 'error input-group mb-4' : 'input-group mb-4'">
       <input type="text" 
         class="col-md-12 monospace" 
-        ng-change="addressError = concli.valAddress(address)" 
+        ng-change="addressError = !constitution.valAddress(address)" 
         ng-model="address" value="Galaxy Name" 
         placeholder="new-address">
       <div class="error-label">Not a valid address</div>
@@ -71,7 +71,7 @@
     <button class="btn btn-tetiary" 
       ng-click="path('state')">&#8592 Back</button>
     <button ng-class="!loading && !galaxyError && galaxy && !addressError && address ? 'btn btn-secondary' : 'btn disabled'" 
-      ng-click="!galaxyError && galaxy && !addressError && address ? doCreateGalaxy(concli.toAddress(galaxy), address) : '' ">
+      ng-click="!galaxyError && galaxy && !addressError && address ? doCreateGalaxy(constitution.toAddress(galaxy), address) : '' ">
       {{ loading ? 'Creating' : 'Create' }}
     </button>
   </section>

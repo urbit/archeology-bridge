@@ -26,7 +26,7 @@
       ng-show="offline">
       <input sig type="text" 
         class="col-md-8 monospace" 
-        ng-change="parentShipError = concli.valShip(concli.toAddress(shipName))" 
+        ng-change="parentShipError = !constitution.valShip(constitution.toAddress(shipName))" 
         ng-model="shipName" 
         value="Star Name" 
         placeholder="parent-ship">
@@ -42,7 +42,7 @@
       <button ng-class="!voteYes ? 'btn btn-warning' : 'btn'" ng-click="voteYes = false">No</button>
     </div>
     <div ng-init="addressError = false" ng-class="addressError ? 'error input-group mb-4' : 'input-group mb-4'" ng-show="constitution">
-      <input type="text" class="col-md-12 monospace" ng-change="addressError = valAddress(address)" ng-model="address" value="Address" placeholder="constitution-address">
+      <input type="text" class="col-md-12 monospace" ng-change="addressError = !valAddress(address)" ng-model="address" value="Address" placeholder="constitution-address">
       <div class="error-label">Not a valid address</div>
     </div>
     <div ng-init="hashError = false" ng-class="hashError ? 'error input-group mb-4' : 'input-group mb-4'" ng-show="!constitution">
@@ -92,11 +92,11 @@
     <div ng-switch="constitution">
       <button class="btn btn-tetiary" ng-click="wipeTx(); path('state')" >&#8592 Back</button>
       <button ng-switch-when="true" ng-class="!locked && address && checked ? 'btn btn-secondary' : 'btn disabled'" 
-        ng-click="address && checked ? doCastConstitutionVote(concli.toAddress(shipName), address, voteYes) : ''">
+        ng-click="address && checked ? doCastConstitutionVote(constitution.toAddress(shipName), address, voteYes) : ''">
         {{ loading ? 'Creating' : 'Create' }}
       </button>
       <button ng-switch-when="false" ng-class="!locked && hash && checked ? 'btn btn-secondary' : 'btn disabled'" 
-        ng-click="hash && checked ? doCastDocumentVote(concli.toAddress(shipName), hash, voteYes) : ''" >
+        ng-click="hash && checked ? doCastDocumentVote(constitution.toAddress(shipName), hash, voteYes) : ''" >
         {{ loading ? 'Creating' : 'Create' }}
       </button>
     </div>

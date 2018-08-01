@@ -13,6 +13,8 @@ const spawn = require('../../partial/spawn.html');
 const setSpawnProxy = require('../../partial/setspawnproxy.html');
 const configureKeys = require('../../partial/configurekeys.html');
 const type = require('../../partial/type.html');
+const details = require('../../partial/details.html');
+const reticket = require('../../partial/reticket.html');
 
 var templateService = {
     state: state,
@@ -28,7 +30,9 @@ var templateService = {
     createGalaxy: createGalaxy,
     spawn: spawn,
     setSpawnProxy: setSpawnProxy,
-    configureKeys: configureKeys
+    configureKeys: configureKeys,
+    details: details,
+    reticket: reticket
 };
 
 module.exports = templateService;

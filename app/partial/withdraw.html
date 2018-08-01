@@ -35,7 +35,7 @@
       ng-class="shipError ? 'error input-group mb-4' : 'input-group mb-4'">
       <input sig type="text" 
         class="col-md-8 monospace" 
-        ng-change="shipError = concli.valStar(concli.toAddress(ship))" 
+        ng-change="shipError = !constitution.valStar(constitution.toAddress(ship))" 
         ng-model="ship" value="Star Name" 
         placeholder="star-to-withdraw">
     </div>
@@ -43,7 +43,7 @@
       ng-class="addressError ? 'error input-group mb-4' : 'input-group mb-4'">
       <input type="text" 
         class="monospace col-md-12" 
-        ng-change="addressError = concli.valAddress(poolAddress)" 
+        ng-change="addressError = !constitution.valAddress(poolAddress)" 
         ng-model="poolAddress" value="Address" placeholder="pool-address">
       <div class="error-label">Not a valid address</div>
     </div>
@@ -87,7 +87,7 @@
     </div>
     <button class="btn btn-tetiary" ng-click="wipeTx(); path('state')" >&#8592 Back</button>
     <button ng-class="!loading && checked && !shipError && ship && !addressError && poolAddress ? 'btn btn-secondary' : 'btn disabled'" 
-      ng-click="checked && !shipError && ship && !addressError && poolAddress ? doWithdraw(concli.toAddress(ship)): ''">
+      ng-click="checked && !shipError && ship && !addressError && poolAddress ? doWithdraw(constitution.toAddress(ship)): ''">
       {{ loading ? 'Creating' : 'Create' }}
     </button>
   </section>

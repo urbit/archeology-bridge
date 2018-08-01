@@ -1,0 +1,39 @@
+<div id="details" 
+  class="col-md-12 transaction" 
+  ng-init="loadAddresses(); shipName = $routeParams.p != 'offline' ? $routeParams.p : ''">
+  <span class="address text-700 row">
+    {{ wallet.getAddressString() }}
+  </span>
+  <!-- GENERAL INFORMATION ABOUT TRANSACTION -->
+  <section class="general-information mb-8 mt-20">
+    <h1 id="action-title row">{{ constitution.formatShipName(shipName) }}</h1>
+  </section>
+  <!-- TRANSACTION PARAMS -->
+  <section class="transaction-params mb-8">
+    <div class="ship-actions row">
+      <div class="live-action-col col-md-2">
+        <h5>Owner</h5>
+      </div>
+      <div class="live-action-col col-md-4">
+        <h5>Network</h5>
+      </div>
+      <div class="live-action-col col-md-4">
+        <h5>Meta</h5>
+      </div>
+    </div>
+  </section>
+  <section class="transaction-params mb-8">
+    <div class="ship-actions row">
+      <div class="live-action-col col-md-2">
+        <h5>Issued ships</h5>
+      </div>
+    </div>
+  </section>
+  <section class="transaction-params mb-8">
+    <div class="ship-actions row">
+      <div class="live-action-col col-md-2">
+        <h5>Actions</h5>
+      </div>
+    </div>
+  </section>
+</div>
