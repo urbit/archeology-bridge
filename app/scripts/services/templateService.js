@@ -5,6 +5,7 @@ const allowTransfer = require('../../partial/allowtransfer.html');
 const deposit = require('../../partial/deposit.html');
 const withdraw = require('../../partial/withdraw.html');
 const transfer = require('../../partial/transfer.html');
+const accept = require('../../partial/accept.html');
 const escape = require('../../partial/escape.html');
 const adopt = require('../../partial/adopt.html');
 const vote = require('../../partial/vote.html');
@@ -23,6 +24,7 @@ var templateService = {
     withdraw: withdraw,
     mode: mode,
     transfer: transfer,
+    accept: accept,
     allowTransfer: allowTransfer,
     deposit: deposit,
     adopt: adopt,
