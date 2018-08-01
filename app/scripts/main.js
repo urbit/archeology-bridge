@@ -184,6 +184,10 @@ app.config(['$routeProvider', '$locationProvider',
             template: templateService.configureKeys
             //controller: 'urbitCtrl'
         })
+        .when('/state/:p/accepttransfer', {
+            template: templateService.accepttransfer
+            //controller: 'urbitCtrl'
+        })
         .when('/state/reticket', {
             template: templateService.reticket
             //controller: 'urbitCtrl'

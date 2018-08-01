@@ -36,6 +36,7 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
       $scope.pollCount +=1;
       $scope.readBalance();
       $scope.getOwnedShips();
+      $scope.getTransferringShips();
     }
     if ($scope.polling) {
       $timeout(poll, 6000);
@@ -109,8 +110,8 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
   $scope.getTransferringShips = function() {
     $scope.constitution.readTransferringFor($scope.wallet.getAddressString(), function(res) {
         $scope.tempPendingTransferShips = res.data;
-        console.log('PENDING: ' + res.data);
         if ($scope.tempPendingTransferShips.length > 0) $scope.pendingTransfers = true;
+        else $scope.pendingTransfers = false;
         if (!angular.equals($scope.pendingTransferShips, $scope.tempPendingTransferShips)) {
           angular.copy($scope.tempPendingTransferShips, $scope.pendingTransferShips);
         }

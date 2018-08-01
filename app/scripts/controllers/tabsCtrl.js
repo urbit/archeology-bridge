@@ -48,6 +48,7 @@ var tabsCtrl = function($scope, globalService, $translate, $sce, $location, $roo
       'spawn': 'Spawn',
       'setspawnproxy': 'Set spawn proxy',
       'configurekeys': 'Configure keys',
+      'accepttransfer': 'Accept transfer',
       'details': 'Details',
       'reticket': 'Reticket'
     };
