@@ -160,6 +160,10 @@ app.config(['$routeProvider', '$locationProvider',
             template: templateService.transfer
             //controller: 'urbitCtrl'
         })
+        .when('/state/:p/accept', {
+            template: templateService.accept
+            //controller: 'urbitCtrl'
+        })
         .when('/state/:p/purchase', {
             template: templateService.purchase
             //controller: 'urbitCtrl'
