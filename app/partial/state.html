@@ -1,15 +1,15 @@
 <div>
     <span id="" class="text-700 address">{{ wallet.getAddressString() }}</span>
-    <h1 class="mt-20">Your Urbit Wallet</h1>
+    <h1 class="mt-20">Wallet</h1>
     <div class="online" ng-show="!offline">
       <section class="constitution-owner col-md-12 mb-8" ng-show="wallet.getAddressString() == '0x6deffb0cafdb11d175f123f6891aa64f01c24f7d'">
         <button class="btn-primary btn"
           ng-click="path('state/creategalaxy')">
-          Create galaxy &#8594 
+          Create galaxy
         </button>
       </section>
       <section class="sparks col-md-12 mb-8">
-        <h4>Sparks:</h4>
+        <h4>Your sparks</h4>
        <div class="spark-ops" ng-show="poolAddress">
           <div class="spark-bal row">
             <span class="sparks h2 green">{{ balance }} USP</span>
@@ -20,46 +20,80 @@
         </div>
         <div class="pool-input" ng-show="!poolAddress">
           <div class="input-group mb-4">
-            <input type="text" class="monospace col-md-12" ng-model="tmpPool" placeholder="pool-address"/>
+            <input type="text" class="monospace col-md-12" ng-model="tmpPool"/>
           </div>
-          <button class="btn btn-primary" ng-click="setPoolAddress(tmpPool); readBalance(); showPool = false;">Connect</button>
+          <button class="btn btn-secondary" ng-click="setPoolAddress(tmpPool); readBalance(); showPool = false;">Connect to Pool</button>
         </div>
       </section>
       <section class="ships col-md-12">
-        <h4>Ships:</h4>
+        <h4>Your ships</h4>
+        <button class="btn-warning btn"
+          ng-click="path('state/reticket')">
+          Reticket
+        </button>
+        <div class="pool-input" ng-show="pendingTransfers">
+          <section class="ships col-md-6">
+            <h5>Pending transfers</h5>
+          </section>
+          <div class="ship-entry" ng-repeat="pendingShip in pendingTransferShips">
+            <div class="ship-name row">
+              <h2 class="monospace">{{ constitution.formatShipName(constitution.toShipName(pendingShip)) }}</h2>
+            </div>
+            <div class="ship-actions row">
+              <div class="live-action-col col-md-2">
+                <ul class="list-reset">
+                  <li>
+                    <a class="" href='' ng-click="path('state/' + constitution.toShipName(pendingShip))">Details</a>
+                  </li>
+                </ul>
+              </div>
+              <div class="live-action-col col-md-4">
+                <button class="btn btn-secondary" ng-click="path('state/' + constitution.formatShipName(constitution.toShipName(pendingShip)) + '/accepttransfer')">Accept transfer</button>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="ship-entry" ng-repeat="ship in ownedShips">
           <div class="ship-name row">
             <h2 class="monospace">{{ ship.name }}</h2>
           </div>
           <div class="ship-actions row">
-            <div class="live-action-col col-md-3">
-              <div class="col-title text-600 h-font">
-                Actions
-              </div>
+            <div class="live-action-col col-md-2">
+              <ul class="list-reset">
+                <li>
+                  <a class="" href='' ng-click="path('state/' + ship.name + '/details')">Details</a>
+                </li>
+              </ul>
+            </div>
+            <div class="live-action-col col-md-4">
               <ul class="list-reset">
                 <li ng-show="ship.address < 65536 && ship.hasBeenBooted">
-                  <a class="" href='' ng-click="path('state/' + ship.name + '/spawn')">Spawn</a>
+                  <a class="" href='' ng-click="path('state/' + ship.name + '/spawn')">Issue ship</a>
                 </li>
                 <li>
                   <a class="" href='' ng-click="path('state/' + ship.name + '/transfer')">Transfer</a>
                 </li>
                 <li ng-show="ship.address < 65536">
-                  <a class="" href='' ng-click="path('state/' + ship.name + '/allowtransfer')">Allow transfer</a>
+                  <a class="" href='' ng-click="path('state/' + ship.name + '/allowtransfer')">Set proxy for transfer</a>
+                </li>
+                <li ng-show="ship.address < 65536">
+                  <a class="" href='' ng-click="path('state/' + ship.name + '/setspawnproxy')">Set proxy for issuing</a>
                 </li>
                 <li ng-show="ship.address > 255 && ship.address < 65536 && !ship.hasBeenBooted">
                   <a class="" href='' ng-click="path('state/' + ship.name + '/deposit')">Deposit</a>
                 </li>
-                <li ng-show="ship.address < 65536">
-                  <a class="" href='' ng-click="path('state/' + ship.name + '/setspawnproxy')">Set spawn proxy</a>
-                </li>
-                <li>
-                  <a class="" href='' ng-click="path('state/' + ship.name + '/configurekeys')">Configure keys</a>
-                </li>
                 <li ng-show="ship.address > 255">
                   <a class="" href='' ng-click="path('state/' + ship.name + '/escape')">Escape</a>
                 </li>
+              </ul>
+            </div>
+            <div class="live-action-col col-md-4">
+              <ul class="list-reset">
                 <li>
-                  <a class="" href='' ng-click="path('state/' + ship.name + '/adopt')">Adopt/reject</a>
+                  <a class="" href='' ng-click="path('state/' + ship.name + '/configurekeys')">Set Urbit network keys</a>
+                </li>
+                <li>
+                  <a class="" href='' ng-click="path('state/' + ship.name + '/adopt')">Adopt / reject</a>
                 </li>
                 <li ng-show="ship.address < 256">
                   <a class="" href='' ng-click="path('state/' + ship.name + '/vote')">Vote</a>

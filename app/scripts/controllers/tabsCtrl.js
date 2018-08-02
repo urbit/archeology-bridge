@@ -12,6 +12,8 @@ var tabsCtrl = function($scope, globalService, $translate, $sce, $location, $roo
 
     $scope.wallet = walletService.wallet;
 
+    $scope.constitution = constitution;
+
     //Offline status done through rootScope
     $scope.setOffline = function() {
       $scope.offline = true;
@@ -32,6 +34,9 @@ var tabsCtrl = function($scope, globalService, $translate, $sce, $location, $roo
     }
 
     $scope.navDisplayDict = {
+      'state': 'State',
+      'type': 'Type',
+      'mode': 'Mode',
       'creategalaxy': 'Create galaxy',
       'allowtransfer': 'Allow transfer',
       'withdraw': 'Withdraw star',
@@ -42,7 +47,10 @@ var tabsCtrl = function($scope, globalService, $translate, $sce, $location, $roo
       'vote': 'Vote',
       'spawn': 'Spawn',
       'setspawnproxy': 'Set spawn proxy',
-      'configurekeys': 'Configure keys'
+      'configurekeys': 'Configure keys',
+      'accepttransfer': 'Accept transfer',
+      'details': 'Details',
+      'reticket': 'Reticket'
     };
 
     // This is dependent on URL handling
@@ -127,6 +135,11 @@ var tabsCtrl = function($scope, globalService, $translate, $sce, $location, $roo
           }
           $scope.curNode = newNode;
         }
+
+        if (typeof $scope.web3 !== 'undefined') { $scope.web3 = new Web3($scope.web3.currentProvider); } 
+        else { $scope.web3 = new Web3(new Web3.providers.HttpProvider(newNode.lib.SERVERURL)); }
+
+        $scope.constitution.setServerUrl(newNode.lib.SERVERURL);
 
         $scope.dropdownNode = false;
         Token.popTokens = $scope.curNode.tokenList;

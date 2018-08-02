@@ -177,6 +177,10 @@ var decryptWalletCtrl = function($scope, $sce, $location, walletService) {
         }
         $scope.HDWallet.id = 0;
         $scope.HDWallet.numWallets = start + limit;
+
+        $scope.constitution.setPrivateKey($scope.HDWallet.hdk, $scope.HDWallet.dPath, $scope.HDWallet.id, function(res) {
+            if (!res['error']) { console.log('DEFAULT ACCOUNT: ' + res.data); }
+        });
     }
     $scope.setHDAddressesHWWallet = function(start, limit, ledger) {
         $scope.HDWallet.wallets = [];
@@ -206,6 +210,9 @@ var decryptWalletCtrl = function($scope, $sce, $location, walletService) {
     }
     $scope.setHDWallet = function() {
         //this assigns the wallet to the walletService
+        $scope.constitution.setDefaultAccountWithPathAndIndex($scope.HDWallet.dPath, $scope.HDWallet.id, function(res) {
+            if (!res['error']) { console.log('SELECTED ACCOUNT: ' + res.data); }
+        });
         walletService.wallet = $scope.wallet = $scope.HDWallet.wallets[$scope.HDWallet.id];
         $location.path('state');
         //$scope.mnemonicModel.close();

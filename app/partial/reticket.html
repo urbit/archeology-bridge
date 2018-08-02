@@ -1,0 +1,101 @@
+<div id="reticket" 
+  class="col-md-12 transaction" 
+  ng-init="loadAddresses(); shipName = $routeParams.p != 'offline' ? $routeParams.p : ''">
+  <span class="address row text-700">
+    {{ wallet.getAddressString() }}
+  </span>
+  <section class="general-information mb-8 mt-20">
+    <h1 id="action-title row">Reticket</h1>
+    <div class="help-text row">
+      <p class="col-md-8">This will generate a new Urbit ticket (64-bit @p) or superticket (384-bit @p), and compute transactions to transfer all of your ships to this new ticket.
+      </p>
+      <p class="col-md-8">You will still need to accept these transfers with your new ticket. So you’ll need to start Wallet again with this new ticket.
+      </p>
+      <p class="col-md-8 red" ng-show="offline">You are in offline mode. Please copy and paste the transaction below into an appropriate client.
+      </p>
+    </div>
+    <div class="compute-buttons">
+      <div class="compute-ticket">
+        <button class="btn btn-secondary" ng-click="">Compute ticket</button>
+      </div>
+      <div class="compute-superticket">
+        <button class="btn btn-secondary" ng-click="">Compute superticket</button>
+      </div>
+    </div>
+  </section>
+  <section class="transaction-params mb-8">
+    <!-- show this offline -->
+    <div ng-init="shipError = false" 
+      ng-class="shipError ? 'error input-group mb-4' : 'input-group mb-4'" 
+      ng-show="offline">
+      <input sig type="text" 
+        class="col-md-8 monospace" 
+        ng-change="shipError = !valShip(constitution.toAddress(shipName))" 
+        ng-model="shipName" 
+        value="Star Name" 
+        placeholder="ticket">
+      <div class="error-label">{{ shipName }} is not a ship</div>
+    </div>
+    <!-- /show this offline -->
+    <div ng-init="addressError = false" ng-class="addressError ? 'error input-group mb-4' : 'input-group mb-4'">
+      <input type="text" class="monospace col-md-12" ng-change="addressError = !constitution.valAddress(address)" ng-model="address" value="Address" placeholder="address">
+      <div class="error-label">Not a valid address</div>
+    </div>
+    <!-- show these offline -->
+    <div class="offline-params" ng-show="offline">
+      <div ng-init="gasLimitError = false" 
+        ng-class="gasLimitError ? 'error input-group mb-4' : 'input-group mb-4'">
+        <input type="text" 
+          class="col-md-4" 
+          ng-change="gasLimitError = tx.gasLimit > 3000000"
+          ng-model="tx.gasLimit" 
+          value="Gas Limit" 
+          placeholder="gas-limit">
+        <div class="error-label">{{ tx.gasLimit }} is too high</div>
+      </div>
+      <div ng-init="nonceError = false" 
+        ng-class="nonceError ? 'error input-group mb-4' : 'input-group mb-4'">
+        <input type="text" 
+          class="col-md-4" 
+          ng-model="nonceDec" 
+          value="nonce" 
+          placeholder="nonce">
+      </div>
+      <div ng-init="gasPriceError = false" 
+        ng-class="gasPriceError ? 'error input-group mb-4' : 'input-group mb-4'">
+        <input type="text" 
+          class="col-md-4" 
+          ng-model="gasPriceDec" 
+          value="gasPrice" 
+          placeholder="gas-price">
+      </div>
+    </div>
+    <!-- /show these offline -->
+    <button class="btn btn-tetiary" ng-click="wipeTx(); path('state')" >&#8592 Back</button>
+    <button ng-class="!loading && checked && !addressError && address ? 'btn btn-secondary' : 'btn disabled'" 
+      ng-click="" >
+      {{ loading ? 'Generating' : 'Generate transactions' }}
+    </button>
+  </section>
+  <section class="transaction-data" 
+    ng-show="rawTx" 
+    ng-init="sent = false">
+    <h4>Raw Tx</h4>
+    <div class="raw-tx row col-md-8 text-code tx input-group mb-4">
+      {{ rawTx }}
+    </div>
+    <h4>Signed Tx</h4>
+    <div class="signed-tx row col-md-8 text-code tx input-group mb-4">
+      {{ signedTx }}
+    </div>
+    <button class="btn btn-tetiary" 
+      ng-click="path('state')">
+      &#8592 Back
+    </button>
+    <button ng-show="!offline" ng-init="sent = false"
+      ng-class="!sent ? 'btn btn-primary' : 'btn disabled'"
+      ng-click="sendTx(); sent = true">
+      Send
+    </button>
+  </section>
+</div>

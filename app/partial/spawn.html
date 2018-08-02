@@ -1,6 +1,6 @@
 <div id="spawn" 
   class="col-md-12 transaction" 
-  ng-init="parentShipName = $routeParams.p != 'offline' ? $routeParams.p : ''">
+  ng-init="hasOwner = true; parentShipName = $routeParams.p != 'offline' ? $routeParams.p : ''">
   <span class="address row text-700">
     {{ wallet.getAddressString() }}
   </span>
@@ -14,7 +14,7 @@
     </div>
     <div class="label-group">
       <h4 class="sub-title text-700">Ship to spawn:</h4>
-      <h2 class="ship-name blue monospace mt-0" ng-show="spawnName">{{ formatShipName(spawnName) }}</h2>
+      <h2 class="ship-name blue monospace mt-0" ng-show="spawnName">{{ constitution.formatShipName(spawnName) }}</h2>
     </div>
   </section>
   <section class="transaction-params mb-8">
@@ -22,7 +22,7 @@
       ng-class="spawnNameError ? 'error input-group mb-4' : 'input-group mb-4'">
       <input sig type="text"
         ng-class="!hasOwner && spawnName ? 'confirmed col-md-8 monospace' : 'col-md-8 monospace'" 
-        ng-change="spawnNameError = valShip(ob.toAddress(spawnName)); hasOwner = true" 
+        ng-change="spawnNameError = !constitution.valShip(constitution.toAddress(spawnName))" 
         ng-model="spawnName" 
         value="Spawn Name" 
         placeholder="ship">
@@ -33,7 +33,7 @@
       ng-show="offline">
       <input sig type="text" 
         class="col-md-8 monospace" 
-        ng-change="spawnNameError = valShip(ob.toAddress(parentShipName))" 
+        ng-change="spawnNameError = !constitution.valShip(constitution.toAddress(parentShipName))" 
         ng-model="parentShipName" 
         value="Parent Name" 
         placeholder="parent-ship">
@@ -41,11 +41,11 @@
     </div>
     <!-- /show this offline -->
     <div class="input-group mb-4">
-      <button class="btn btn-primary" ng-click="spawnName = toShipName(getSpawnCandidate(ob.toAddress(parentShipName)))">Suggest valid ship</button>
-      <button ng-show="!offline" ng-class="!hasOwner || !spawnName || spawnNameError ? 'btn disabled' : 'btn btn-secondary'" ng-click="readHasOwner(ob.toAddress(spawnName))">Confirm availability</button>
+      <button class="btn btn-primary" ng-click="spawnName = constitution.toShipName(constitution.getSpawnCandidate(constitution.toAddress(parentShipName)))">Suggest valid ship</button>
+      <button ng-show="!offline" ng-class="!hasOwner && spawnName && !spawnNameError ? 'btn disabled' : 'btn btn-secondary'" ng-click="readHasOwner(constitution.toAddress(spawnName))">Confirm availability</button>
     </div>
     <div ng-init="addressError = false" ng-class="addressError ? 'error input-group mb-4' : 'input-group mb-4'">
-      <input type="text" class="col-md-12 monospace" ng-change="addressError = valAddress(address)" ng-model="address" value="Address" placeholder="new-address">
+      <input type="text" class="col-md-12 monospace" ng-change="addressError = !constitution.valAddress(address)" ng-model="address" value="Address" placeholder="new-address">
       <div class="error-label">Not a valid address</div>
     </div>
     <!-- show these offline -->
@@ -88,7 +88,7 @@
     </div>
     <button class="btn btn-tetiary" ng-click="wipeTx(); path('state')" >&#8592 Back</button>
     <button ng-class="!loading && checked && !spawnNameError && spawnName && !addressError && address ? 'btn btn-secondary' : 'btn disabled'" 
-      ng-click="checked && !spawnNameError && spawnName && !addressError && address ? doSpawn(ob.toAddress(spawnName), address) : ''">
+      ng-click="checked && !spawnNameError && spawnName && !addressError && address ? doSpawn(constitution.toAddress(spawnName), address) : ''">
       {{ loading ? 'Creating' : 'Create' }}
     </button>
   </section>

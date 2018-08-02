@@ -26,7 +26,7 @@
       ng-show="offline">
       <input sig type="text" 
         class="col-md-8 monospace" 
-        ng-change="shipError = valShip(ob.toAddress(shipName))" 
+        ng-change="shipError = constitution.valShip(constitution.toAddress(shipName))" 
         ng-model="shipName" 
         value="Star Name" 
         placeholder="ship">
@@ -34,7 +34,7 @@
     </div>
     <!-- /show this offline -->
     <div ng-init="addressError = false" ng-class="addressError ? 'error input-group mb-4' : 'input-group mb-4'">
-      <input type="text" class="col-md-12 monospace" ng-change="addressError = valAddress(poolAddress)" ng-model="poolAddress" value="Address" placeholder="pool-address">
+      <input type="text" class="col-md-12 monospace" ng-change="addressError = constitution.valAddress(poolAddress)" ng-model="poolAddress" value="Address" placeholder="pool-address">
       <div class="error-label">Not a valid address</div>
     </div>
     <!-- show these offline -->
@@ -75,7 +75,7 @@
     </div>
     <button class="btn btn-tetiary" ng-click="wipeTx(); path('state')" >&#8592 Back</button>
     <button ng-class="!loading && checked && !addressError && poolAddress ? 'btn btn-secondary' : 'btn disabled'" 
-      ng-click="checked && !addressError && poolAddress ? doSetTransferProxy(ob.toAddress(shipName), poolAddress) : ''" >
+      ng-click="checked && !addressError && poolAddress ? doSetTransferProxy(constitution.toAddress(shipName), poolAddress) : ''" >
       {{ loading ? 'Creating' : 'Create' }}
     </button>
   </section>
