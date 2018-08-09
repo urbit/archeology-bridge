@@ -18,6 +18,7 @@ var tabsCtrl = function($scope, globalService, $translate, $sce, $location, $roo
     $scope.setOffline = function() {
       $scope.offline = true;
       $rootScope.offline = true;
+      $scope.constitution.setOffline($scope.offline);
     };
 
     $scope.toggleHttpView = function() {

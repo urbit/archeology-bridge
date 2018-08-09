@@ -50,10 +50,10 @@
         <input type="text" 
           class="col-md-4" 
           ng-change="gasLimitError = tx.gasLimit > 3000000"
-          ng-model="tx.gasLimit" 
+          ng-model="gasLimitDec" 
           value="Gas Limit" 
           placeholder="gas-limit">
-        <div class="error-label">{{ tx.gasLimit }} is too high</div>
+        <div class="error-label">{{ gasLimitDec }} is too high</div>
       </div>
       <div ng-init="nonceError = false" 
         ng-class="nonceError ? 'error input-group mb-4' : 'input-group mb-4'">
