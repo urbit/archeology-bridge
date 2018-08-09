@@ -11,6 +11,7 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
 
   //Offline status and poolAddress done through rootScope for persistence
   $scope.offline = $rootScope.offline;
+  $scope.constitution.setOffline($scope.offline);
 
   $scope.poolAddress = $rootScope.poolAddress;
 
@@ -37,6 +38,8 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
       $scope.readBalance();
       $scope.getOwnedShips();
       $scope.getTransferringShips();
+      $scope.offline = $rootScope.offline;
+      $scope.constitution.setOffline($scope.offline);
     }
     if ($scope.polling) {
       $timeout(poll, 6000);
@@ -56,6 +59,7 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
   // Use these in lieu of tx.* for offline transaction generation
   $scope.nonceDec;
   $scope.gasPriceDec;
+  $scope.gasLimitDec;
 
   $scope.showRaw = false;
 
@@ -228,77 +232,138 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
   //
   $scope.doCreateGalaxy = function(galaxy, address) {
     $scope.loading = true;
-    $scope.constitution.doCreateGalaxy(galaxy, address, txHandler);
+    if ($scope.offline) {
+      $scope.constitution.doCreateGalaxy(galaxy, address, txHandler, {gas: gasLimitDec, gasPrice: gasPriceDec, nonce: nonceDec});
+    } else {
+      $scope.constitution.doCreateGalaxy(galaxy, address, txHandler);
+    }
+
   }
 
   $scope.doDeposit = function(star) {
     $scope.loading = true;
-    $scope.constitution.doDeposit(star, $rootScope.poolAddress, txHandler);
+    if ($scope.offline) {
+      $scope.constitution.doDeposit(star, $rootScope.poolAddress, txHandler, {gas: gasLimitDec, gasPrice: gasPriceDec, nonce: nonceDec});
+    } else {
+      $scope.constitution.doDeposit(star, $rootScope.poolAddress, txHandler);
+    }
   }
 
   $scope.doWithdraw = function(star) {
     $scope.loading = true;
-    $scope.constitution.doWithdraw(star, $rootScope.poolAddress, txHandler)
+    if ($scope.offline) {
+      $scope.constitution.doWithdraw(star, $rootScope.poolAddress, txHandler, {gas: gasLimitDec, gasPrice: gasPriceDec, nonce: nonceDec});
+    } else {
+      $scope.constitution.doWithdraw(star, $rootScope.poolAddress, txHandler);
+    }
   }
 
   $scope.doSpawn = function(ship, addr) {
     $scope.loading = true;
-    $scope.constitution.doSpawn(ship, addr, txHandler);
+    if ($scope.offline) {
+      $scope.constitution.doSpawn(ship, addr, txHandler, {gas: gasLimitDec, gasPrice: gasPriceDec, nonce: nonceDec});
+    } else {
+      $scope.constitution.doSpawn(ship, addr, txHandler);
+    }
   }
 
   $scope.doSetSpawnProxy = function(ship, addr) {
     $scope.loading = true;
-    $scope.constitution.doSetSpawnProxy(ship, addr, txHandler);
+    if ($scope.offline) {
+      $scope.constitution.doSetSpawnProxy(ship, addr, txHandler, {gas: gasLimitDec, gasPrice: gasPriceDec, nonce: nonceDec});
+    } else {
+      $scope.constitution.doSetSpawnProxy(ship, addr, txHandler);
+    }
   }
 
   $scope.doConfigureKeys = function(ship, encryptionKey, authenticationKey, cryptoSuiteVersion, discontinuous) {
     $scope.loading = true;
-    $scope.constitution.doConfigureKeys(ship, encryptionKey, authenticationKey, cryptoSuiteVersion, discontinuous, txHandler);
+    if ($scope.offline) {
+      $scope.constitution.doConfigureKeys(ship, encryptionKey, authenticationKey, cryptoSuiteVersion, discontinuous, txHandler, {gas: gasLimitDec, gasPrice: gasPriceDec, nonce: nonceDec});
+    } else {
+      $scope.constitution.doConfigureKeys(ship, encryptionKey, authenticationKey, cryptoSuiteVersion, discontinuous, txHandler);
+    }
   }
 
   $scope.doTransferShip = function(ship, addr, reset) {
     $scope.loading = true;
-    $scope.constitution.doTransferShip(ship, addr, reset, txHandler);
+    if ($scope.offline) {
+      $scope.constitution.doTransferShip(ship, addr, reset, txHandler, {gas: gasLimitDec, gasPrice: gasPriceDec, nonce: nonceDec});
+    } else {
+      $scope.constitution.doTransferShip(ship, addr, reset, txHandler);
+    }
   }
 
   $scope.doSetTransferProxy = function(ship, addr) {
     $scope.loading = true;
-    $scope.constitution.doSetTransferProxy(ship, addr, txHandler);
+    if ($scope.offline) {
+      $scope.constitution.doSetTransferProxy(ship, addr, txHandler, {gas: gasLimitDec, gasPrice: gasPriceDec, nonce: nonceDec});
+    } else {
+      $scope.constitution.doSetTransferProxy(ship, addr, txHandler);
+    }
   }
 
   $scope.doEscape = function(ship, sponsor) {
     $scope.loading = true;
-    $scope.constitution.doEscape(ship, sponsor, txHandler);
+    if ($scope.offline) {
+      $scope.constitution.doEscape(ship, sponsor, txHandler, {gas: gasLimitDec, gasPrice: gasPriceDec, nonce: nonceDec});
+    } else {
+      $scope.constitution.doEscape(ship, sponsor, txHandler);
+    }
   }
 
   $scope.doAdopt = function(sponsor, escapee) {
     $scope.loading = true;
-    $scope.constitution.doAdopt(sponsor, escapee, txHandler);
+    if ($scope.offline) {
+      $scope.constitution.doAdopt(sponsor, escapee, txHandler, {gas: gasLimitDec, gasPrice: gasPriceDec, nonce: nonceDec});
+    } else {
+      $scope.constitution.doAdopt(sponsor, escapee, txHandler);
+    }
   }
 
   $scope.doReject = function(sponsor, escapee) {
     $scope.loading = true;
-    $scope.constitution.doReject(sponsor, escapee, txHandler);
+    if ($scope.offline) {
+      $scope.constitution.doReject(sponsor, escapee, txHandler, {gas: gasLimitDec, gasPrice: gasPriceDec, nonce: nonceDec});
+    } else {
+      $scope.constitution.doReject(sponsor, escapee, txHandler);
+    }
   }
 
   $scope.doApprove = function(address, ship) {
     $scope.loading = true;
-    $scope.constitution.doApprove(address, ship, txHandler);
+    if ($scope.offline) {
+      $scope.constitution.doApprove(address, ship, txHandler, {gas: gasLimitDec, gasPrice: gasPriceDec, nonce: nonceDec});
+    } else {
+      $scope.constitution.doApprove(address, ship, txHandler);
+    }
   }
 
   $scope.doSafeTransferFrom = function(fromAddr, toAddr, ship) {
     $scope.loading = true;
-    $scope.constitution.doSafeTransferFrom(fromAddr, toAddr, ship, txHandler);
+    if ($scope.offline) {
+      $scope.constitution.doSafeTransferFrom(fromAddr, toAddr, ship, txHandler, {gas: gasLimitDec, gasPrice: gasPriceDec, nonce: nonceDec});
+    } else {
+      $scope.constitution.doSafeTransferFrom(fromAddr, toAddr, ship, txHandler);
+    }
   }
 
   $scope.doCastConstitutionVote = function(galaxy, addr, vote) {
     $scope.loading = true;
-    $scope.constitution.doCastConstitutionVote(galaxy, addr, vote, txHandler);
+    if ($scope.offline) {
+      $scope.constitution.doCastConstitutionVote(galaxy, addr, vote, txHandler, {gas: gasLimitDec, gasPrice: gasPriceDec, nonce: nonceDec});
+    } else {
+      $scope.constitution.doCastConstitutionVote(galaxy, addr, vote, txHandler);
+    }
   }
 
   $scope.doCastDocumentVote = function(galaxy, prop, vote) {
     $scope.loading = true;
-    $scope.constitution.doCastDocumentVote(galaxy, prop, vote, txHandler);
+    if ($scope.offline) {
+      $scope.constitution.doCastDocumentVote(galaxy, prop, vote, txHandler, {gas: gasLimitDec, gasPrice: gasPriceDec, nonce: nonceDec});
+    } else {
+      $scope.constitution.doCastDocumentVote(galaxy, prop, vote, txHandler);
+    }
   }
 
   var txHandler = function(res) {
