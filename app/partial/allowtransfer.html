@@ -1,6 +1,6 @@
 <div id="allow-transfer" 
   class="col-md-12 transaction" 
-  ng-init="loadAddresses(); shipName = $routeParams.p != 'offline' ? $routeParams.p : ''">
+  ng-init="shipName = $routeParams.p != 'offline' ? $routeParams.p : ''">
   <span class="address row text-700">
     {{ wallet.getAddressString() }}
   </span>
@@ -73,9 +73,9 @@
       </div>
       <label class="action-confirmation ml-4" ng-click="checked = checked == true ? false : true">Yes I am sure</label>
     </div>
-    <button class="btn btn-tetiary" ng-click="path('state')" >&#8592 Back</button>
+    <button class="btn btn-tetiary" ng-click="wipeTx(); path('state')" >&#8592 Back</button>
     <button ng-class="!loading && checked && !addressError && poolAddress ? 'btn btn-secondary' : 'btn disabled'" 
-      ng-click="checked && !addressError && poolAddress ? doAllowTransferBy(ob.toAddress(shipName), poolAddress) : ''" >
+      ng-click="checked && !addressError && poolAddress ? doSetTransferProxy(ob.toAddress(shipName), poolAddress) : ''" >
       {{ loading ? 'Creating' : 'Create' }}
     </button>
   </section>

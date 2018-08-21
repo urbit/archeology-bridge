@@ -7,7 +7,7 @@
   <section class="general-information mb-8 mt-20">
     <h1 id="action-title row">Vote</h1>
     <div class="help-text row">
-      <p class="col-md-8">You have one vote per galaxy owned. If you would like to vote on an abstract proposal, check the appropriate box and enter the proposal hash. To vote on a new constitution contract, enter the new proposed constitution address and your vote. Once a concrete constitution attains a majority vote, ownership of all data contracts is transferred to the proposed address and the current Constitution is destroyed.
+      <p class="col-md-8">You have one vote per galaxy owned. If you would like to vote on a document proposal, check the appropriate box and enter the proposal hash. To vote on a new constitution contract, enter the new proposed constitution address and your vote. Once a proposed constitution attains a majority vote, ownership of all data contracts is transferred to the proposed address and the current Constitution is destroyed.
       </p>
       <p class="col-md-8 red" ng-show="offline">You are in offline mode. Please copy and paste the transaction below into an appropriate client.
       </p>
@@ -33,19 +33,19 @@
       <div class="error-label">{{ shipName }} is not a ship</div>
     </div>
     <!-- /show this offline -->
-    <div class="button-group input-group mb-4 toggle-group" ng-init="concrete=true">
-      <button ng-class="concrete ? 'btn btn-primary' : 'btn'" ng-click="concrete = true">Concrete</button>
-      <button ng-class="!concrete ? 'btn btn-primary' : 'btn'" ng-click="concrete = false">Abstract</button>
+    <div class="button-group input-group mb-4 toggle-group" ng-init="constitution=true">
+      <button ng-class="constitution ? 'btn btn-primary' : 'btn'" ng-click="constitution = true">Constitution</button>
+      <button ng-class="!constitution ? 'btn btn-primary' : 'btn'" ng-click="constitution = false">Document</button>
     </div>
     <div class="button-group input-group mb-4 toggle-group" ng-init="voteYes=false">
       <button ng-class="voteYes ? 'btn btn-secondary' : 'btn'" ng-click="voteYes = true">Yes</button>
       <button ng-class="!voteYes ? 'btn btn-warning' : 'btn'" ng-click="voteYes = false">No</button>
     </div>
-    <div ng-init="addressError = false" ng-class="addressError ? 'error input-group mb-4' : 'input-group mb-4'" ng-show="concrete">
+    <div ng-init="addressError = false" ng-class="addressError ? 'error input-group mb-4' : 'input-group mb-4'" ng-show="constitution">
       <input type="text" class="col-md-12 monospace" ng-change="addressError = valAddress(address)" ng-model="address" value="Address" placeholder="constitution-address">
       <div class="error-label">Not a valid address</div>
     </div>
-    <div ng-init="hashError = false" ng-class="hashError ? 'error input-group mb-4' : 'input-group mb-4'" ng-show="!concrete">
+    <div ng-init="hashError = false" ng-class="hashError ? 'error input-group mb-4' : 'input-group mb-4'" ng-show="!constitution">
       <input type="text" class="col-md-12 monospace" ng-change="" ng-model="hash" value="Address" placeholder="proposal-hash">
       <div class="error-label">Not a valid hash</div>
     </div>
@@ -89,14 +89,14 @@
       </div>
       <label class="action-confirmation ml-4" ng-click="checked = checked == true ? false : true">Yes I am sure</label>
     </div>
-    <div ng-switch="concrete">
-      <button class="btn btn-tetiary" ng-click="path('state')" >&#8592 Back</button>
+    <div ng-switch="constitution">
+      <button class="btn btn-tetiary" ng-click="wipeTx(); path('state')" >&#8592 Back</button>
       <button ng-switch-when="true" ng-class="!locked && address && checked ? 'btn btn-secondary' : 'btn disabled'" 
-        ng-click="address && checked ? doCastConcreteVote(ob.toAddress(shipName), address, voteYes) : ''">
+        ng-click="address && checked ? doCastConstitutionVote(ob.toAddress(shipName), address, voteYes) : ''">
         {{ loading ? 'Creating' : 'Create' }}
       </button>
       <button ng-switch-when="false" ng-class="!locked && hash && checked ? 'btn btn-secondary' : 'btn disabled'" 
-        ng-click="hash && checked ? doCastAbstractVote(ob.toAddress(shipName), hash, voteYes) : ''" >
+        ng-click="hash && checked ? doCastDocumentVote(ob.toAddress(shipName), hash, voteYes) : ''" >
         {{ loading ? 'Creating' : 'Create' }}
       </button>
     </div>

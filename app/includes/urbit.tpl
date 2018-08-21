@@ -51,29 +51,28 @@
     </form>
     <br/>
 
-    <form name="fetchHasPilot">
-      <input id="getHasPilot_ship" type="number" placeholder="ship #" />
-      <button ng-click="readHasPilot();">has pilot?</button>
+    <form name="fetchHasOwner">
+      <input id="getHasOwner_ship" type="number" placeholder="ship #" />
+      <button ng-click="readHasOwner();">has owner?</button>
       <br/>
-      <input id="hasPilot" type="checkbox" disabled />
+      <input id="hasOwner" type="checkbox" disabled />
     </form>
     <br/>
 
-    <form name="fetchIsPilot">
-      <input id="getIsPilot_ship" type="number" placeholder="ship #" />
-      <input id="getIsPilot_address" type="text" placeholder="address" />
-      <button ng-click="readIsPilot();">is pilot?</button>
+    <form name="fetchIsOwner">
+      <input id="getIsOwner_ship" type="number" placeholder="ship #" />
+      <input id="getIsOwner_address" type="text" placeholder="address" />
+      <button ng-click="readIsOwner();">is owner?</button>
       <br/>
-      <input id="isPilot" type="checkbox" disabled />
+      <input id="IsOwner" type="checkbox" disabled />
     </form>
     <br/>
 
-    <form name="fetchIsState">
-      <input id="getIsState_ship" type="number" placeholder="ship #" />
-      <input id="getIsState_state" type="number" placeholder="state" />
-      <button ng-click="readIsState();">is state?</button>
+    <form name="fetchIsActive">
+      <input id="getIsActive_ship" type="number" placeholder="ship #" />
+      <button ng-click="getIsActive();">is active?</button>
       <br/>
-      <input id="isState" type="checkbox" disabled />
+      <input id="isActive" type="checkbox" disabled />
     </form>
     <br/>
 
@@ -110,12 +109,12 @@
     </form>
     <br/>
 
-    <form name="fetchIsLauncher">
-      <input id="getIsLauncher_ship" type="number" placeholder="star #" />
-      <input id="getIsLauncher_address" type="text" placeholder="contract address" />
-      <button ng-click="readIsLauncher();">is launcher?</button>
+    <form name="fetchIsSpawnProxy">
+      <input id="getIsSpawnProxy_ship" type="number" placeholder="star #" />
+      <input id="getIsSpawnProxy_address" type="text" placeholder="contract address" />
+      <button ng-click="readIsSpawnProxy();">is spawn proxy?</button>
       <br/>
-      <input id="isLauncher" type="checkbox" disabled />
+      <input id="isSpawnProxy" type="checkbox" disabled />
     </form>
 
     <hr/>
@@ -132,8 +131,6 @@
     <form name="taskCreateGalaxy">
       <input id="createGalaxy_galaxy" type="number" placeholder="galaxy #" />
       <input id="createGalaxy_owner" type="text" placeholder="owner" />
-      <input id="createGalaxy_locktime" type="number" placeholder="locked until timestamp" />
-      <input id="createGalaxy_completetime" type="number" placeholder="completely released at" />
       <button ng-click="doCreateGalaxy();">create galaxy</button>
     </form>
     <br/>
@@ -171,10 +168,10 @@
     </form>
     <br/>
 
-    <form name="taskStart">
-      <input id="start_ship" type="number" placeholder="ship #" />
-      <input id="start_key" type="text" placeholder="initial key" />
-      <button ng-click="doStart();">start ship</button>
+    <form name="taskSpawn">
+      <input id="spawn_ship" type="number" placeholder="ship #" />
+      <input id="spawn_key" type="text" placeholder="initial key" />
+      <button ng-click="doSpawn();">spawn ship</button>
     </form>
     <br/>
 
@@ -186,10 +183,11 @@
     </form>
     <br/>
 
-    <form name="taskRekey">
-      <input id="rekey_ship" type="number" placeholder="ship #" />
-      <input id="rekey_key" type="text" placeholder="new key" />
-      <button ng-click="doRekey();">rekey</button>
+    <form name="taskConfigureKeys">
+      <input id="configurekeys_ship" type="number" placeholder="ship #" />
+      <input id="configurekey_encryptionkey" type="text" placeholder="encryption key" />
+      <input id="configurekey_authenticationkey" type="text" placeholder="authentication key" />
+      <button ng-click="doconfigureKeys();">configure keys</button>
     </form>
     <br/>
 
