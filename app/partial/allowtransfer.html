@@ -75,11 +75,7 @@
     </div>
     <button class="btn btn-tetiary" ng-click="wipeTx(); path('state')" >&#8592 Back</button>
     <button ng-class="!loading && checked && !addressError && poolAddress ? 'btn btn-secondary' : 'btn disabled'" 
-<<<<<<< HEAD
       ng-click="checked && !addressError && poolAddress ? doSetTransferProxy(constitution.toAddress(shipName), poolAddress) : ''" >
-=======
-      ng-click="checked && !addressError && poolAddress ? doSetTransferProxy(ob.toAddress(shipName), poolAddress) : ''" >
->>>>>>> 1b1fddab8ac9e05d58473f99def7b72d9f6f63fa
       {{ loading ? 'Creating' : 'Create' }}
     </button>
   </section>
