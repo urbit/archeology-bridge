@@ -37,10 +37,11 @@
           </section>
           <div class="ship-entry" ng-repeat="pendingShip in pendingTransferShips">
             <div class="ship-name row">
+              <div class="sigil mr-8" ng-bind-html="generateSigil(ship.name)"></div>
               <h2 class="monospace">{{ constitution.formatShipName(constitution.toShipName(pendingShip)) }}</h2>
             </div>
             <div class="ship-actions row">
-              <div class="live-action-col col-md-2">
+              <div class="live-action-col col-md-2 col-md-offset-2">
                 <ul class="list-reset">
                   <li>
                     <a class="" href='' ng-click="path('state/' + constitution.toShipName(pendingShip))">Details</a>
@@ -53,12 +54,13 @@
             </div>
           </div>
         </div>
-        <div class="ship-entry" ng-repeat="ship in ownedShips">
+        <div class="ship-entry mt-8" ng-repeat="ship in ownedShips">
           <div class="ship-name row">
+            <div class="sigil mr-8" ng-bind-html="generateSigil(ship.name)"></div>
             <h2 class="monospace">{{ ship.name }}</h2>
           </div>
           <div class="ship-actions row">
-            <div class="live-action-col col-md-2">
+            <div class="live-action-col col-md-2 col-md-offset-2">
               <ul class="list-reset">
                 <li>
                   <a class="" href='' ng-click="path('state/' + ship.name + '/details')">Details</a>
@@ -85,10 +87,6 @@
                 <li ng-show="ship.address > 255">
                   <a class="" href='' ng-click="path('state/' + ship.name + '/escape')">Escape</a>
                 </li>
-              </ul>
-            </div>
-            <div class="live-action-col col-md-4">
-              <ul class="list-reset">
                 <li>
                   <a class="" href='' ng-click="path('state/' + ship.name + '/configurekeys')">Set Urbit network keys</a>
                 </li>

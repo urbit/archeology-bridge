@@ -77,6 +77,8 @@ var walletDecryptDrtv        = require('./directives/walletDecryptDrtv');
 var muwHeader                = require('./directives/muwHeader');
 var fileReaderDrtv           = require('./directives/fileReaderDrtv');
 var urbitCtrl                = require('./controllers/urbitCtrl');
+var sigils = require('./sigils');
+window.sigils = sigils;
 var app = angular.module('mewApp', ['pascalprecht.translate', 'ngSanitize','ngAnimate', 'ngRoute']);
 app.config(['$compileProvider', function($compileProvider) {
   //$compileProvider.aHrefSanitizationWhitelist(/^\s*(|blob|https|mailto):/);

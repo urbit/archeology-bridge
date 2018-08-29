@@ -307,6 +307,10 @@ var urbitCtrl = function($scope, $sce, $routeParams, $location, $rootScope, $tim
     $scope.constitution.doCastDocumentVote(galaxy, prop, vote, txHandler);
   }
 
+  $scope.generateSigil = function(patp) {
+    return $sce.trustAsHtml(sigils.pour({patp: patp.replace("~", ""), size: 128, sylmap: sigils.sylmap, renderer: sigils.SVGComponents}).outerHTML);
+  }
+
   var txHandler = function(res) {
     if (res.error) {
       $scope.notifier.danger(res.error.msg);
