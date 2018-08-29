@@ -210,7 +210,7 @@ var decryptWalletCtrl = function($scope, $sce, $location, walletService) {
     }
     $scope.setHDWallet = function() {
         //this assigns the wallet to the walletService
-        $scope.constitution.setDefaultAccountWithPathAndIndex($scope.HDWallet.dPath, $scope.HDWallet.id, function(res) {
+        $scope.constitution.setDefaultAccount($scope.HDWallet.dPath, $scope.HDWallet.id, function(res) {
             if (!res['error']) { console.log('SELECTED ACCOUNT: ' + res.data); }
         });
         walletService.wallet = $scope.wallet = $scope.HDWallet.wallets[$scope.HDWallet.id];
