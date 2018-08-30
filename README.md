@@ -48,7 +48,6 @@ You’ll also need 3 terminal windows open for the following processes:
 - `git clone https://github.com/urbit/bridge`
 - `cd bridge`
 - `npm install`
-- `npm link ../constitution-js`
 
 #### Clone constitution-js
 - `git clone https://github.com/urbit/constitution-js`
