@@ -1,6 +1,6 @@
-# Bridge
+# bridge
 
-Bridge is a fork of [MyEtherWallet](https://www.MyEtherWallet.com) that allows
+bridge is a fork of [MyEtherWallet](https://www.MyEtherWallet.com) that allows
 you to manage various aspects of your Urbit ships, such as launching, transferring, issuing, and voting through the Urbit constitution, a PKI and identity system implemented as an Ethereum smart contract.
 
 ## Development
