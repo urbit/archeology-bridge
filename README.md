@@ -92,9 +92,12 @@ each transaction.
 
 ### Build wallet
 1. cd into the repo directory and `npm install`
-2. `npm run dev`
-3. This command will watch the `app/` directory and build into the `dist/` directory.
-4. Open the file at `dist/index.html` in a browser, OR `cd` into `bin/` and run `python ./serve.py`. Use the latter if you'd like to test with either the Ledger wallet or Metamask
+2. you'll need to link in our transaction module, so clone [the constitution-js](https://github.com/urbit/constitution-js) repo.
+3. `cd` into the constitution-js repo and enter `npm link`
+4. return to the etherwallet repo and run `npm link constitution-js`
+5. now run `npm run dev`
+6. This command will watch the `app/` directory and build into the `dist/` directory.
+7. Open the file at `dist/index.html` in a browser, OR `cd` into `bin/` and run `python ./serve.py`. Use the latter if you'd like to test with either the Ledger wallet or Metamask
 
 ### Testnet
 In order to test the functionality of the Wallet, you'll need a testnet running the 
