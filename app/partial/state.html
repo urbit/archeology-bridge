@@ -37,7 +37,7 @@
           </section>
           <div class="ship-entry" ng-repeat="pendingShip in pendingTransferShips">
             <div class="ship-name row">
-              <div class="sigil mr-8" ng-bind-html="generateSigil(ship.name)"></div>
+              <div class="sigil mr-8" ng-bind-html="generateSigil(constitution.toShipName(pendingShip))"></div>
               <h2 class="monospace">{{ constitution.formatShipName(constitution.toShipName(pendingShip)) }}</h2>
             </div>
             <div class="ship-actions row">
