@@ -75,7 +75,29 @@ In order to test with Ledger or Metamask, you must run a server:
 
 ### Useful addresses
 - Constitution owner (allowed to create galaxies): `0x6deffb0cafdb11d175f123f6891aa64f01c24f7d`
-- Test pool: `0x0724ee9912836c2563eee031a739dda6dd775333`
+- Test pool: `0xb71c0b6cee1bcae56dfe95cd9d3e41ddd7eafc43`
+
+
+#### Smoke test
+
+In the interest of keeping the main brach of this repo in decent, running shape, please run the following [smoke test](https://en.wikipedia.org/wiki/Smoke_testing_(software)) to ensure that nothing behaves in an unexpected fashion.
+
+*Given:* The above development environment. `ac0` defined as address `0x6deffb0cafdb11d175f123f6891aa64f01c24f7d`. `ac1` defined as address `0xd53208cf45fc9bd7938b200bff8814a26146688f`. Both can be accessed using the mnemonic in the section "Launch node & deploy contracts."
+
+1. Login as ac0
+2. Create a galaxy (A)
+3. Create another galaxy (B)
+4. Transfer B to ac1
+5. Configure keys of A
+6. Spawn (issue) child of A (call this AA) to ac0
+7. Connect to default pool (address in truffle deploy scroll back)
+8. Deposit AA to pool
+9. Login as ac1
+10. Accept pending galaxy (B)
+11. Configure keys of B
+12. Spawn 2 children (BA BB) from B
+13. Deposit BA, BB to pool
+14. Withdraw AA from pool
 
 ## Running bridge locally
 
